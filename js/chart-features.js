@@ -1363,66 +1363,50 @@ function refreshChart() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ENHANCED OVERVIEW — ESSENCE ONLY (Suggestion 4)
-// Just the chart + 3 key facts + one action
+// ENHANCED OVERVIEW CHART — Clean chart for bento card
+// Fits inside the existing bento layout, click to explore
 // ═══════════════════════════════════════════════════════════════════════════
 
 function renderEnhancedOverviewChart() {
   if (!chartData) return '<div class="overview-placeholder">Generate your chart to see overview</div>';
 
   const c = chartData;
-  const moon = c.planets.find(p => p.name === 'Moon');
-  const dashaPlanet = c.dasha?.maha?.planet || 'Saturn';
   const layout = [11,0,1,2,10,null,null,3,9,null,null,4,8,7,6,5];
+  const dashaPlanet = c.dasha?.maha?.planet || 'Saturn';
 
   return `
-    <div class="overview-essence">
-      <!-- The Chart (clean, no interactions) -->
-      <div class="overview-chart-display">
-        <div class="si-chart-interactive overview-minimal">
-          ${layout.map((signOffset) => {
-            if (signOffset === null) {
-              return '<div class="chart-cell-interactive empty"></div>';
-            }
-            const sign = (c.lagna + signOffset) % 12;
-            const houseNum = signOffset + 1;
-            const planetsHere = c.planets.filter(p => p.house === houseNum);
-            const isLagna = signOffset === 0;
+    <div class="si-chart-interactive overview-chart-enhanced" data-dasha="${dashaPlanet}">
+      ${layout.map((signOffset) => {
+        if (signOffset === null) {
+          return '<div class="chart-cell-interactive empty" style="background: var(--stone-soft);"></div>';
+        }
+        const sign = (c.lagna + signOffset) % 12;
+        const houseNum = signOffset + 1;
+        const planetsHere = c.planets.filter(p => p.house === houseNum);
+        const isLagna = signOffset === 0;
 
-            return `
-              <div class="chart-cell-interactive${isLagna ? ' lagna' : ''}" data-house="${houseNum}">
-                <span class="cell-sign-interactive">${SIGN_GLYPHS[sign]}</span>
-                <div class="cell-planets-interactive">
-                  ${planetsHere.map(p => `<span class="planet-glyph-interactive" title="${p.name}">${p.glyph}</span>`).join('')}
-                </div>
-              </div>
-            `;
-          }).join('')}
-        </div>
-      </div>
-
-      <!-- 3 Key Facts -->
-      <div class="overview-facts">
-        <div class="overview-fact">
-          <span class="fact-glyph">${SIGN_GLYPHS[c.lagna]}</span>
-          <span class="fact-value">${SIGNS[c.lagna]}</span>
-          <span class="fact-label">Rising</span>
-        </div>
-        <div class="overview-fact">
-          <span class="fact-glyph">☽</span>
-          <span class="fact-value">${moon ? SIGNS[moon.sign] : '—'}</span>
-          <span class="fact-label">Moon</span>
-        </div>
-        <div class="overview-fact">
-          <span class="fact-glyph">${P_GLYPHS[dashaPlanet] || '✦'}</span>
-          <span class="fact-value">${dashaPlanet}</span>
-          <span class="fact-label">Dasha</span>
-        </div>
-      </div>
-
-      <!-- Single Action -->
-      <button class="overview-cta" onclick="showSection('chart')">
-        Enter Deep Chart →
+        return `
+          <div class="chart-cell-interactive${isLagna ? ' lagna' : ''}"
+               data-house="${houseNum}"
+               onclick="showHouseModal(${houseNum})"
+               style="cursor: pointer;">
+            <span class="cell-house-num">${houseNum}</span>
+            <span class="cell-sign-interactive">${SIGN_GLYPHS[sign]}</span>
+            <div class="cell-planets-interactive">
+              ${planetsHere.map(p => {
+                let dignityClass = p.exalted ? ' exalted' : p.debilitated ? ' debilitated' : '';
+                return `<span class="planet-glyph-interactive${dignityClass}${p.isAK ? ' ak' : ''}"
+                             onclick="event.stopPropagation(); showPlanetModal('${p.name}')"
+                             title="${p.name}${p.retro ? ' ℞' : ''}">${p.glyph}${p.retro ? '<sup style="font-size:0.5em">℞</sup>' : ''}</span>`;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+    <div style="text-align: center; margin-top: 16px;">
+      <button onclick="showSection('chart')" class="overview-explore-btn">
+        Explore Full Chart →
       </button>
     </div>
   `;

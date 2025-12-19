@@ -5394,8 +5394,8 @@ window.navigateLesson = function(lessonKey) {
 // Enhanced overview chart with breathing, tooltips, and navigation
 function renderOverviewChartInner(c, layout) {
   // Use enhanced version if available
-  if (typeof renderEnhancedOverviewChart === 'function') {
-    return renderEnhancedOverviewChart();
+  if (typeof window.renderEnhancedOverviewChart === 'function') {
+    return window.renderEnhancedOverviewChart();
   }
 
   // Fallback to basic version
@@ -8558,7 +8558,7 @@ const sections = {
   planets: renderPlanets,
   houses: renderHouses,
   dashas: renderDashas,
-  chart: () => typeof renderEnhancedChart === 'function' ? renderEnhancedChart() : renderChart(),
+  chart: () => typeof window.renderEnhancedChart === 'function' ? window.renderEnhancedChart() : renderChart(),
   glossary: renderGlossary
 };
 

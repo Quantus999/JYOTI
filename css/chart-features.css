@@ -394,14 +394,15 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   OVERVIEW ESSENCE (Suggestion 4)
-   Just chart + 3 facts + one button
+   OVERVIEW CHART ENHANCED
+   Clean chart for bento card with explore button
    ═══════════════════════════════════════════════════════════════════════════ */
-.overview-essence {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
+.overview-chart-enhanced {
+  /* Inherits grid styles from .si-chart-interactive */
+}
+
+.overview-chart-enhanced .chart-cell-interactive:hover {
+  background: var(--gold-soft);
 }
 
 .overview-placeholder {
@@ -410,62 +411,18 @@
   color: var(--text-muted);
 }
 
-.overview-chart-display {
-  width: 100%;
-  max-width: 320px;
-}
-
-.overview-minimal {
-  pointer-events: none;
-}
-
-.overview-minimal .cell-house-num {
-  display: none;
-}
-
-.overview-facts {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
-}
-
-.overview-fact {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.fact-glyph {
-  font-size: 1.5rem;
-  color: var(--gold);
-}
-
-.fact-value {
-  font-weight: 500;
-  color: var(--ink);
-  font-size: 0.9rem;
-}
-
-.fact-label {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.overview-cta {
-  padding: 14px 32px;
+.overview-explore-btn {
+  padding: 12px 24px;
   background: var(--prussian);
   color: white;
   border: none;
   border-radius: 100px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.overview-cta:hover {
+.overview-explore-btn:hover {
   transform: scale(1.02);
   box-shadow: 0 4px 16px rgba(0,49,83,0.2);
 }
