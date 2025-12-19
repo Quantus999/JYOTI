@@ -1134,8 +1134,7 @@ function renderChartToolbar() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ENHANCED CHART — Pure Minimalism
-// Billionaire × Apple × AI 2050 × Best UX/UI
+// ENHANCED CHART — Immersive, Teaching, Stunning
 // ═══════════════════════════════════════════════════════════════════════════
 
 function renderEnhancedChart() {
@@ -1158,85 +1157,116 @@ function renderEnhancedChart() {
   const highlightClass = ChartFeatures.highlightCategory || '';
   const sacredClass = ChartFeatures.silentMode ? 'chart-sacred' : '';
 
-  return `
-    <div class="chart-pure ${sacredClass}">
+  // Get the Sanskrit mantra for current dasha
+  const mantras = {
+    Sun: 'ॐ सूर्याय नमः',
+    Moon: 'ॐ चन्द्राय नमः',
+    Mars: 'ॐ मङ्गलाय नमः',
+    Mercury: 'ॐ बुधाय नमः',
+    Jupiter: 'ॐ गुरवे नमः',
+    Venus: 'ॐ शुक्राय नमः',
+    Saturn: 'ॐ शनैश्चराय नमः',
+    Rahu: 'ॐ राहवे नमः',
+    Ketu: 'ॐ केतवे नमः'
+  };
 
-      <!-- THE CHART — Centered, breathing, sacred -->
-      <div class="chart-stage">
-        <div id="chart-main-container" class="chart-frame ${highlightClass}">
-          ${renderSquareChartSimple()}
+  return `
+    <div class="chart-immersive ${sacredClass}">
+
+      ${ChartFeatures.silentMode ? `
+        <div class="sacred-header">
+          <div class="sacred-mantra">${mantras[dashaPlanet] || 'ॐ'}</div>
+          <div class="sacred-subtitle">Breathe. Observe. Receive.</div>
+        </div>
+      ` : `
+        <div class="chart-header">
+          <h2 class="chart-title">Your Rāśi Chart</h2>
+          <p class="chart-subtitle">Click any house to learn its meaning</p>
+        </div>
+      `}
+
+      <!-- THE CHART — Large, commanding, beautiful -->
+      <div class="chart-container">
+        <div id="chart-main-container" class="chart-grid-wrapper ${highlightClass}">
+          ${renderLargeSquareChart()}
         </div>
       </div>
 
-      <!-- ESSENCE — Three truths -->
-      <div class="chart-essence">
-        <button class="essence-pill" onclick="showHouseModal(1)">
-          <span class="pill-glyph">${SIGN_GLYPHS[c.lagna]}</span>
-          <span class="pill-text">${SIGNS[c.lagna]} Rising</span>
-        </button>
-        <button class="essence-pill" onclick="showPlanetModal('Moon')">
-          <span class="pill-glyph">☽</span>
-          <span class="pill-text">${moon ? SIGNS[moon.sign] : ''} Moon</span>
-        </button>
-        <button class="essence-pill" onclick="showPlanetModal('${dashaPlanet}')">
-          <span class="pill-glyph">${P_GLYPHS[dashaPlanet] || '✦'}</span>
-          <span class="pill-text">${dashaPlanet} Dasha</span>
-        </button>
-      </div>
+      ${!ChartFeatures.silentMode ? `
+        <!-- ESSENCE — Key information -->
+        <div class="chart-essence">
+          <div class="essence-card" onclick="showHouseModal(1)">
+            <span class="essence-glyph">${SIGN_GLYPHS[c.lagna]}</span>
+            <span class="essence-name">${SIGNS[c.lagna]}</span>
+            <span class="essence-role">Ascendant</span>
+          </div>
+          <div class="essence-card" onclick="showPlanetModal('Moon')">
+            <span class="essence-glyph">☽</span>
+            <span class="essence-name">${moon ? SIGNS[moon.sign] : ''}</span>
+            <span class="essence-role">Moon Sign</span>
+          </div>
+          <div class="essence-card" onclick="showPlanetModal('${dashaPlanet}')">
+            <span class="essence-glyph">${P_GLYPHS[dashaPlanet] || '✦'}</span>
+            <span class="essence-name">${dashaPlanet}</span>
+            <span class="essence-role">Current Dasha</span>
+          </div>
+        </div>
 
-      <!-- FILTERS — With explanations -->
-      <div class="chart-filters">
-        <button class="filter-chip ${ChartFeatures.highlightCategory === 'kendra' ? 'active' : ''}"
-                onclick="window.applyChartFilter('kendra')"
-                title="The Four Pillars: Houses 1, 4, 7, 10 — Self, Home, Partner, Career">
-          <span class="chip-label">Kendra</span>
-          <span class="chip-houses">1·4·7·10</span>
-        </button>
-        <button class="filter-chip ${ChartFeatures.highlightCategory === 'trikona' ? 'active' : ''}"
-                onclick="window.applyChartFilter('trikona')"
-                title="The Trines of Fortune: Houses 1, 5, 9 — Dharma, Creativity, Wisdom">
-          <span class="chip-label">Trikona</span>
-          <span class="chip-houses">1·5·9</span>
-        </button>
-        <button class="filter-chip ${ChartFeatures.highlightCategory === 'dusthana' ? 'active' : ''}"
-                onclick="window.applyChartFilter('dusthana')"
-                title="Houses of Challenge: Houses 6, 8, 12 — Obstacles, Transformation, Liberation">
-          <span class="chip-label">Dusthana</span>
-          <span class="chip-houses">6·8·12</span>
-        </button>
-        <button class="filter-chip clear-chip" onclick="window.applyChartFilter(null)">
-          Clear
-        </button>
-      </div>
+        <!-- HOUSE CATEGORIES -->
+        <div class="category-section">
+          <div class="category-label">Highlight house groups:</div>
+          <div class="category-buttons">
+            <button class="category-btn ${ChartFeatures.highlightCategory === 'kendra' ? 'active kendra' : ''}"
+                    onclick="window.applyChartFilter('kendra')">
+              <span class="cat-name">Kendra</span>
+              <span class="cat-desc">The Pillars (1,4,7,10)</span>
+            </button>
+            <button class="category-btn ${ChartFeatures.highlightCategory === 'trikona' ? 'active trikona' : ''}"
+                    onclick="window.applyChartFilter('trikona')">
+              <span class="cat-name">Trikona</span>
+              <span class="cat-desc">Fortune (1,5,9)</span>
+            </button>
+            <button class="category-btn ${ChartFeatures.highlightCategory === 'dusthana' ? 'active dusthana' : ''}"
+                    onclick="window.applyChartFilter('dusthana')">
+              <span class="cat-name">Dusthana</span>
+              <span class="cat-desc">Challenges (6,8,12)</span>
+            </button>
+          </div>
+          ${ChartFeatures.highlightCategory ? `
+            <div class="category-explanation">
+              ${ChartFeatures.highlightCategory === 'kendra' ?
+                'Kendra houses are the four pillars supporting your life. Planets here manifest strongly in the world.' :
+                ChartFeatures.highlightCategory === 'trikona' ?
+                'Trikona houses bring dharma, luck, and divine grace. The most auspicious positions for benefics.' :
+                'Dusthana houses teach through challenge. They transform weakness into wisdom.'}
+            </div>
+          ` : ''}
+        </div>
 
-      <!-- Filter explanation -->
-      <div class="filter-explanation" id="filter-explanation">
-        ${ChartFeatures.highlightCategory === 'kendra' ?
-          '<span class="explanation-icon">◇</span> <strong>Kendra</strong> — The four pillars of life. Planets here are powerful and prominent.' :
-          ChartFeatures.highlightCategory === 'trikona' ?
-          '<span class="explanation-icon">△</span> <strong>Trikona</strong> — Houses of dharma, fortune, and past-life blessings. Most auspicious positions.' :
-          ChartFeatures.highlightCategory === 'dusthana' ?
-          '<span class="explanation-icon">◯</span> <strong>Dusthana</strong> — Houses of challenge and transformation. Growth through difficulty.' :
-          ''}
-      </div>
-
-      <!-- ACTIONS -->
-      <div class="chart-actions">
-        <button class="action-link" onclick="startTeachMode()">
-          Teach me this chart
-        </button>
-        <span class="action-dot">·</span>
-        <button class="action-link" onclick="window.toggleSacredMode()">
-          ${ChartFeatures.silentMode ? 'Exit sacred mode' : 'Sacred mode'}
-        </button>
-      </div>
+        <!-- ACTIONS -->
+        <div class="chart-footer">
+          <button class="footer-btn teach" onclick="startTeachMode()">
+            <span>✦</span> Teach Me This Chart
+          </button>
+          <button class="footer-btn sacred" onclick="window.toggleSacredMode()">
+            <span>☽</span> Enter Sacred Mode
+          </button>
+        </div>
+      ` : `
+        <!-- SACRED MODE FOOTER -->
+        <div class="sacred-footer">
+          <button class="sacred-exit" onclick="window.toggleSacredMode()">
+            Return to Study
+          </button>
+        </div>
+      `}
 
     </div>
   `;
 }
 
-// Simplified square chart for new design
-function renderSquareChartSimple() {
+// Large square chart with sign NAMES
+function renderLargeSquareChart() {
   if (!chartData) return '<div>No chart data</div>';
 
   const c = chartData;
@@ -1244,33 +1274,41 @@ function renderSquareChartSimple() {
 
   let cells = layout.map((signOffset) => {
     if (signOffset === null) {
-      return '<div class="chart-cell-interactive empty"></div>';
+      return '<div class="chart-cell empty"></div>';
     }
 
     const sign = (c.lagna + signOffset) % 12;
     const houseNum = signOffset + 1;
     const planetsHere = c.planets.filter(p => p.house === houseNum);
     const isLagna = signOffset === 0;
+    const bhava = BHAVA_DETAILS ? BHAVA_DETAILS[houseNum] : null;
 
     const planetHtml = planetsHere.map(p => {
       let dignityClass = p.exalted ? ' exalted' : p.debilitated ? ' debilitated' : '';
-      return `<span class="planet-glyph-interactive${dignityClass}${p.isAK ? ' ak' : ''}"
+      let retroMark = p.retro ? '<span class="retro-mark">℞</span>' : '';
+      return `<span class="planet-badge${dignityClass}${p.isAK ? ' atmakaraka' : ''}"
                    onclick="event.stopPropagation(); showPlanetModal('${p.name}')"
-                   title="${p.name}${p.retro ? ' ℞' : ''}">${p.glyph}</span>`;
+                   title="${p.name}${p.retro ? ' (Retrograde)' : ''}${p.exalted ? ' — Exalted' : ''}${p.debilitated ? ' — Debilitated' : ''}">
+                ${p.glyph}${retroMark}
+              </span>`;
     }).join('');
 
     return `
-      <div class="chart-cell-interactive${isLagna ? ' lagna' : ''}"
+      <div class="chart-cell${isLagna ? ' lagna' : ''}${planetsHere.length === 0 ? ' empty-house' : ''}"
            onclick="showHouseModal(${houseNum})"
            data-house="${houseNum}">
-        <span class="cell-house-num">${houseNum}</span>
-        <span class="cell-sign-glyph">${SIGN_GLYPHS[sign]}</span>
-        <div class="cell-planets-interactive">${planetHtml}</div>
+        <div class="cell-header">
+          <span class="house-number">${houseNum}</span>
+          <span class="sign-glyph">${SIGN_GLYPHS[sign]}</span>
+        </div>
+        <div class="sign-name">${SIGNS[sign]}</div>
+        <div class="cell-planets">${planetHtml}</div>
+        ${planetsHere.length === 0 && bhava ? `<div class="house-hint">${bhava.shortName || ''}</div>` : ''}
       </div>
     `;
   }).join('');
 
-  return `<div class="si-chart-interactive">${cells}</div>`;
+  return `<div class="chart-grid">${cells}</div>`;
 }
 
 // Toggle sacred mode and re-render
@@ -1378,13 +1416,12 @@ function renderEnhancedOverviewChart() {
 
   const c = chartData;
   const layout = [11,0,1,2,10,null,null,3,9,null,null,4,8,7,6,5];
-  const dashaPlanet = c.dasha?.maha?.planet || 'Saturn';
 
   return `
-    <div class="si-chart-interactive overview-chart-enhanced" data-dasha="${dashaPlanet}">
+    <div class="overview-chart-grid">
       ${layout.map((signOffset) => {
         if (signOffset === null) {
-          return '<div class="chart-cell-interactive empty" style="background: var(--stone-soft);"></div>';
+          return '<div class="overview-cell empty"></div>';
         }
         const sign = (c.lagna + signOffset) % 12;
         const houseNum = signOffset + 1;
@@ -1392,25 +1429,26 @@ function renderEnhancedOverviewChart() {
         const isLagna = signOffset === 0;
 
         return `
-          <div class="chart-cell-interactive${isLagna ? ' lagna' : ''}"
-               data-house="${houseNum}"
-               onclick="showHouseModal(${houseNum})"
-               style="cursor: pointer;">
-            <span class="cell-house-num">${houseNum}</span>
-            <span class="cell-sign-interactive">${SIGN_GLYPHS[sign]}</span>
-            <div class="cell-planets-interactive">
+          <div class="overview-cell${isLagna ? ' lagna' : ''}"
+               onclick="showHouseModal(${houseNum})">
+            <div class="ov-header">
+              <span class="ov-house">${houseNum}</span>
+              <span class="ov-glyph">${SIGN_GLYPHS[sign]}</span>
+            </div>
+            <div class="ov-sign">${SIGNS[sign]}</div>
+            <div class="ov-planets">
               ${planetsHere.map(p => {
                 let dignityClass = p.exalted ? ' exalted' : p.debilitated ? ' debilitated' : '';
-                return `<span class="planet-glyph-interactive${dignityClass}${p.isAK ? ' ak' : ''}"
+                return `<span class="ov-planet${dignityClass}"
                              onclick="event.stopPropagation(); showPlanetModal('${p.name}')"
-                             title="${p.name}${p.retro ? ' ℞' : ''}">${p.glyph}${p.retro ? '<sup style="font-size:0.5em">℞</sup>' : ''}</span>`;
+                             title="${p.name}">${p.glyph}</span>`;
               }).join('')}
             </div>
           </div>
         `;
       }).join('')}
     </div>
-    <div style="text-align: center; margin-top: 16px;">
+    <div style="text-align: center; margin-top: 20px;">
       <button onclick="showSection('chart')" class="overview-explore-btn">
         Explore Full Chart →
       </button>

@@ -4,7 +4,638 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   CHART SECTION — Refined Elegance
+   IMMERSIVE CHART — The New Standard
+   Large, commanding, beautiful — with sign names visible
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.chart-immersive {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 24px 60px;
+}
+
+/* Header */
+.chart-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.chart-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+}
+
+.chart-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Chart Container */
+.chart-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 48px;
+}
+
+.chart-grid-wrapper {
+  width: 100%;
+  max-width: 560px;
+  background: linear-gradient(180deg, #ffffff 0%, #fdfcfa 100%);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.02),
+    0 4px 16px rgba(0,0,0,0.04),
+    0 16px 64px rgba(0,0,0,0.03);
+  border: 1px solid rgba(184,151,107,0.08);
+}
+
+/* The Grid */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  background: linear-gradient(135deg, rgba(184,151,107,0.15) 0%, rgba(184,151,107,0.08) 100%);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Each Cell — Large and Clear */
+.chart-cell {
+  background: #fdfcfa;
+  padding: 16px 12px;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.chart-cell:hover {
+  background: linear-gradient(135deg, rgba(184,151,107,0.08) 0%, rgba(184,151,107,0.04) 100%);
+  transform: scale(1.02);
+  z-index: 2;
+}
+
+.chart-cell.empty {
+  background: rgba(184,151,107,0.03);
+  min-height: 110px;
+  cursor: default;
+}
+
+.chart-cell.empty:hover {
+  transform: none;
+}
+
+.chart-cell.lagna {
+  background: linear-gradient(135deg, rgba(196,164,109,0.15) 0%, rgba(196,164,109,0.08) 100%);
+  border: 1px solid rgba(196,164,109,0.3);
+}
+
+.chart-cell.lagna:hover {
+  background: linear-gradient(135deg, rgba(196,164,109,0.2) 0%, rgba(196,164,109,0.12) 100%);
+}
+
+/* Cell Header */
+.cell-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.house-number {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(0,0,0,0.04);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sign-glyph {
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, #c4a46d 0%, #a08050 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Sign Name — THE KEY ELEMENT */
+.sign-name {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: 0.01em;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+/* Planets Container */
+.cell-planets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  flex: 1;
+  align-items: center;
+}
+
+/* Planet Badge */
+.planet-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.planet-badge:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  border-color: rgba(196,164,109,0.4);
+}
+
+.planet-badge.exalted {
+  background: linear-gradient(135deg, rgba(196,164,109,0.2) 0%, rgba(196,164,109,0.1) 100%);
+  border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(196,164,109,0.3);
+}
+
+.planet-badge.debilitated {
+  opacity: 0.7;
+  border-color: rgba(180,80,80,0.4);
+}
+
+.planet-badge.atmakaraka {
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 16px rgba(196,164,109,0.4);
+}
+
+.retro-mark {
+  font-size: 0.55rem;
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  color: var(--brass);
+}
+
+/* Empty House Hint */
+.house-hint {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ESSENCE CARDS — Key Information
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.chart-essence {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.essence-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 28px;
+  background: linear-gradient(180deg, #ffffff 0%, #faf9f7 100%);
+  border: 1px solid rgba(184,151,107,0.12);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+  min-width: 120px;
+}
+
+.essence-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(184,151,107,0.15);
+  border-color: rgba(184,151,107,0.3);
+}
+
+.essence-glyph {
+  font-size: 1.8rem;
+  background: linear-gradient(135deg, #c4a46d 0%, #8b7355 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.essence-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.essence-role {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CATEGORY SECTION — Filter Buttons
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.category-section {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.category-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.category-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.category-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 24px;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+.category-btn:hover {
+  border-color: rgba(184,151,107,0.4);
+  background: rgba(184,151,107,0.04);
+}
+
+.category-btn .cat-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.category-btn .cat-desc {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.category-btn.active {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.category-btn.active.kendra {
+  background: linear-gradient(135deg, #1a3a4a 0%, #0d2530 100%);
+  border-color: transparent;
+}
+
+.category-btn.active.kendra .cat-name,
+.category-btn.active.kendra .cat-desc {
+  color: white;
+}
+
+.category-btn.active.trikona {
+  background: linear-gradient(135deg, #c4a46d 0%, #a08050 100%);
+  border-color: transparent;
+}
+
+.category-btn.active.trikona .cat-name,
+.category-btn.active.trikona .cat-desc {
+  color: white;
+}
+
+.category-btn.active.dusthana {
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  border-color: transparent;
+}
+
+.category-btn.active.dusthana .cat-name,
+.category-btn.active.dusthana .cat-desc {
+  color: white;
+}
+
+.category-explanation {
+  font-size: 0.9rem;
+  color: var(--ink);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, rgba(184,151,107,0.08) 0%, rgba(184,151,107,0.04) 100%);
+  border-radius: 12px;
+  border-left: 3px solid var(--gold);
+}
+
+/* Highlight houses when filter is active */
+.chart-grid-wrapper.kendra .chart-cell[data-house="1"],
+.chart-grid-wrapper.kendra .chart-cell[data-house="4"],
+.chart-grid-wrapper.kendra .chart-cell[data-house="7"],
+.chart-grid-wrapper.kendra .chart-cell[data-house="10"] {
+  background: linear-gradient(135deg, rgba(26,58,74,0.15) 0%, rgba(26,58,74,0.08) 100%);
+  box-shadow: inset 0 0 0 2px rgba(26,58,74,0.25);
+}
+
+.chart-grid-wrapper.trikona .chart-cell[data-house="1"],
+.chart-grid-wrapper.trikona .chart-cell[data-house="5"],
+.chart-grid-wrapper.trikona .chart-cell[data-house="9"] {
+  background: linear-gradient(135deg, rgba(196,164,109,0.2) 0%, rgba(196,164,109,0.1) 100%);
+  box-shadow: inset 0 0 0 2px rgba(196,164,109,0.4);
+}
+
+.chart-grid-wrapper.dusthana .chart-cell[data-house="6"],
+.chart-grid-wrapper.dusthana .chart-cell[data-house="8"],
+.chart-grid-wrapper.dusthana .chart-cell[data-house="12"] {
+  background: linear-gradient(135deg, rgba(100,116,139,0.15) 0%, rgba(100,116,139,0.08) 100%);
+  box-shadow: inset 0 0 0 2px rgba(100,116,139,0.25);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FOOTER BUTTONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.chart-footer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  border: none;
+  border-radius: 100px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.footer-btn.teach {
+  background: linear-gradient(135deg, #1a3a4a 0%, #0d2530 100%);
+  color: white;
+}
+
+.footer-btn.teach:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(26,58,74,0.3);
+}
+
+.footer-btn.sacred {
+  background: transparent;
+  border: 1px solid rgba(196,164,109,0.4);
+  color: var(--gold);
+}
+
+.footer-btn.sacred:hover {
+  background: rgba(196,164,109,0.1);
+  border-color: var(--gold);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SACRED MODE — Truly Immersive
+   Dark, contemplative, breathing
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.chart-immersive.chart-sacred {
+  background: radial-gradient(ellipse at center, #0f1118 0%, #080a0d 100%);
+  min-height: 100vh;
+  margin: -40px -24px 0;
+  padding: 80px 40px;
+  position: relative;
+}
+
+.chart-immersive.chart-sacred::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(196,164,109,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(196,164,109,0.03) 0%, transparent 40%);
+  pointer-events: none;
+  animation: sacred-pulse 8s ease-in-out infinite;
+}
+
+@keyframes sacred-pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.sacred-header {
+  text-align: center;
+  margin-bottom: 60px;
+  animation: fadeInDown 1s ease;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sacred-mantra {
+  font-family: 'Noto Sans Devanagari', var(--font-display), serif;
+  font-size: 2.5rem;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+  text-shadow: 0 0 40px rgba(196,164,109,0.5);
+  animation: mantra-glow 4s ease-in-out infinite;
+}
+
+@keyframes mantra-glow {
+  0%, 100% { text-shadow: 0 0 20px rgba(196,164,109,0.3); }
+  50% { text-shadow: 0 0 60px rgba(196,164,109,0.6); }
+}
+
+.sacred-subtitle {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: breathe-text 6s ease-in-out infinite;
+}
+
+@keyframes breathe-text {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+/* Sacred Chart Wrapper */
+.chart-sacred .chart-grid-wrapper {
+  background: transparent;
+  border: 1px solid rgba(196,164,109,0.2);
+  box-shadow: 0 0 80px rgba(196,164,109,0.1);
+  animation: chart-breathe 8s ease-in-out infinite;
+}
+
+@keyframes chart-breathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 60px rgba(196,164,109,0.08); }
+  50% { transform: scale(1.01); box-shadow: 0 0 100px rgba(196,164,109,0.15); }
+}
+
+.chart-sacred .chart-grid {
+  background: transparent;
+}
+
+.chart-sacred .chart-cell {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(196,164,109,0.1);
+}
+
+.chart-sacred .chart-cell:hover {
+  background: rgba(196,164,109,0.08);
+}
+
+.chart-sacred .chart-cell.lagna {
+  background: rgba(196,164,109,0.08);
+  border-color: rgba(196,164,109,0.4);
+  box-shadow: 0 0 30px rgba(196,164,109,0.15);
+}
+
+.chart-sacred .house-number {
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.3);
+}
+
+.chart-sacred .sign-glyph {
+  opacity: 0.4;
+  -webkit-text-fill-color: rgba(196,164,109,0.5);
+}
+
+.chart-sacred .sign-name {
+  color: rgba(255,255,255,0.25);
+}
+
+.chart-sacred .planet-badge {
+  background: transparent;
+  border: 1px solid rgba(196,164,109,0.3);
+  color: var(--gold);
+  box-shadow: 0 0 20px rgba(196,164,109,0.2);
+}
+
+.chart-sacred .planet-badge:hover {
+  box-shadow: 0 0 30px rgba(196,164,109,0.4);
+}
+
+/* Sacred Footer */
+.sacred-footer {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.sacred-exit {
+  padding: 14px 32px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5);
+  border-radius: 100px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.sacred-exit:hover {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.8);
+  border-color: rgba(255,255,255,0.2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE — Mobile Elegance
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 640px) {
+  .chart-immersive {
+    padding: 24px 16px 48px;
+  }
+
+  .chart-title {
+    font-size: 1.5rem;
+  }
+
+  .chart-grid-wrapper {
+    padding: 16px;
+  }
+
+  .chart-cell {
+    min-height: 85px;
+    padding: 10px 8px;
+  }
+
+  .sign-name {
+    font-size: 0.75rem;
+  }
+
+  .planet-badge {
+    width: 26px;
+    height: 26px;
+    font-size: 0.9rem;
+  }
+
+  .essence-card {
+    padding: 16px 20px;
+    min-width: 100px;
+  }
+
+  .category-btn {
+    min-width: 110px;
+    padding: 12px 16px;
+  }
+
+  .footer-btn {
+    padding: 14px 24px;
+    font-size: 0.9rem;
+  }
+
+  .chart-sacred .sacred-mantra {
+    font-size: 1.8rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHART SECTION — Refined Elegance (Legacy Support)
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* Empty state */
@@ -420,15 +1051,111 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   OVERVIEW CHART ENHANCED
-   Clean chart for bento card with explore button
+   OVERVIEW CHART — With Sign Names
+   Clean, compact chart for bento card
    ═══════════════════════════════════════════════════════════════════════════ */
-.overview-chart-enhanced {
-  /* Inherits grid styles from .si-chart-interactive */
+
+.overview-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  background: linear-gradient(135deg, rgba(184,151,107,0.12) 0%, rgba(184,151,107,0.06) 100%);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.overview-chart-enhanced .chart-cell-interactive:hover {
-  background: var(--gold-soft);
+.overview-cell {
+  background: #fdfcfa;
+  padding: 10px 8px;
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.overview-cell:hover {
+  background: linear-gradient(135deg, rgba(184,151,107,0.1) 0%, rgba(184,151,107,0.05) 100%);
+  transform: scale(1.03);
+  z-index: 2;
+}
+
+.overview-cell.empty {
+  background: rgba(184,151,107,0.03);
+  cursor: default;
+}
+
+.overview-cell.empty:hover {
+  transform: none;
+}
+
+.overview-cell.lagna {
+  background: linear-gradient(135deg, rgba(196,164,109,0.15) 0%, rgba(196,164,109,0.08) 100%);
+}
+
+.ov-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.ov-house {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(0,0,0,0.04);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ov-glyph {
+  font-size: 0.9rem;
+  background: linear-gradient(135deg, #c4a46d 0%, #a08050 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ov-sign {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.ov-planets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  flex: 1;
+  align-items: center;
+}
+
+.ov-planet {
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.ov-planet:hover {
+  transform: scale(1.2);
+}
+
+.ov-planet.exalted {
+  color: var(--gold);
+  text-shadow: 0 0 8px rgba(196,164,109,0.4);
+}
+
+.ov-planet.debilitated {
+  opacity: 0.6;
 }
 
 .overview-placeholder {
@@ -438,19 +1165,20 @@
 }
 
 .overview-explore-btn {
-  padding: 12px 24px;
-  background: var(--prussian);
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #1a3a4a 0%, #0d2530 100%);
   color: white;
   border: none;
   border-radius: 100px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
 }
 
 .overview-explore-btn:hover {
-  transform: scale(1.02);
-  box-shadow: 0 4px 16px rgba(0,49,83,0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(26,58,74,0.25);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
