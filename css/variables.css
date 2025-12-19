@@ -1,0 +1,160 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   JYOTI Design System — CSS Custom Properties
+   Extracted from jyoti-v10_8-fixed.html
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ─── Colors: Sacred Space (60%) ─── */
+  --bg: #FFFFFF;
+  --bg-warm: #FDFCFA;
+  --bg-sanctuary: #F9F7F3;
+  --bg-card: #FFFFFF;
+  --bg-input: #F5F2EB;
+  --bg-hover: #EDE8DC;
+
+  /* ─── Colors: Temple Stone (25%) ─── */
+  --stone: #E8E2D2;
+  --stone-soft: rgba(232, 226, 210, 0.5);
+
+  /* ─── Colors: Sacred Metals (10%) ─── */
+  --brass: #A59564;
+  --brass-soft: rgba(165, 149, 100, 0.12);
+  --brass-glow: rgba(165, 149, 100, 0.06);
+  --sand: #D4C5A3;
+  --sand-soft: rgba(212, 197, 163, 0.15);
+  --champagne: #EDE6B7;
+  --champagne-soft: rgba(237, 230, 183, 0.25);
+
+  /* ─── Colors: Gold Accent ─── */
+  --gold: #C9A227;
+  --gold-light: #E4C15A;
+  --gold-dark: #9A7B1A;
+  --gold-soft: rgba(201, 162, 39, 0.15);
+  --gold-glow: rgba(201, 162, 39, 0.25);
+
+  /* ─── Colors: Prussian Blue (Primary) ─── */
+  --prussian: #003153;
+  --prussian-light: #0A4570;
+  --prussian-soft: rgba(0, 49, 83, 0.08);
+  --prussian-glow: rgba(0, 49, 83, 0.04);
+
+  /* ─── Colors: Spiritual Spectrum ─── */
+  --teal: #005A5B;
+  --teal-soft: rgba(0, 90, 91, 0.08);
+  --teal-glow: rgba(0, 90, 91, 0.04);
+  --turmeric: #E69B3A;
+  --turmeric-soft: rgba(230, 155, 58, 0.12);
+  --ember: #C4632D;
+  --ember-soft: rgba(196, 99, 45, 0.1);
+
+  /* ─── Text Hierarchy ─── */
+  --ink: #1A1918;
+  --ink-soft: #2D2B28;
+  --ink-light: #4A4744;
+  --text-whisper: rgba(26, 25, 24, 0.22);
+  --text-dim: rgba(26, 25, 24, 0.32);
+  --text-muted: rgba(26, 25, 24, 0.52);
+  --text-secondary: rgba(26, 25, 24, 0.72);
+
+  /* ─── Status Colors ─── */
+  --success: #005A5B;
+  --warning: #A59564;
+  --danger: #8B5A58;
+
+  /* ─── Borders ─── */
+  --border-whisper: rgba(26, 25, 24, 0.04);
+  --border: rgba(26, 25, 24, 0.06);
+  --border-soft: rgba(26, 25, 24, 0.08);
+  --border-strong: rgba(26, 25, 24, 0.12);
+
+  /* ─── Glassmorphism ─── */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.3);
+  --glass-blur: 20px;
+
+  /* ─── Typography ─── */
+  --font-display: 'Modern Sans', Georgia, serif;
+  --font-body: 'JUST Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sacred: 'Cormorant Garamond', Georgia, serif;
+
+  /* ─── Spacing ─── */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 40px;
+  --space-xl: 64px;
+  --space-2xl: 100px;
+  --space-3xl: 140px;
+
+  /* ─── Motion ─── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  --duration-fast: 0.2s;
+  --duration-normal: 0.4s;
+  --duration-slow: 0.8s;
+  --duration-glacial: 1.5s;
+
+  /* ─── Shadows ─── */
+  --shadow-float: 0 0 0 0.5px rgba(0,0,0,0.03),
+                  0 2px 4px rgba(0,0,0,0.02),
+                  0 12px 40px rgba(0,0,0,0.04);
+  --shadow-lift: 0 0 0 0.5px rgba(0,0,0,0.04),
+                 0 8px 16px rgba(0,0,0,0.04),
+                 0 24px 64px rgba(0,0,0,0.06);
+  --shadow-glow: 0 0 60px rgba(0, 49, 83, 0.08);
+  --shadow-gold: 0 0 40px rgba(201, 162, 39, 0.2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DARK MODE — Luxurious Night Sky Theme
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+[data-theme="dark"] {
+  --bg: #0A0A0F;
+  --bg-warm: #0D0D14;
+  --bg-sanctuary: #12121A;
+  --bg-card: rgba(20, 20, 30, 0.8);
+  --bg-input: rgba(30, 30, 45, 0.6);
+  --bg-hover: rgba(40, 40, 60, 0.5);
+
+  --stone: #1E1E2A;
+  --stone-soft: rgba(30, 30, 42, 0.5);
+
+  --ink: #F5F5F7;
+  --ink-soft: #E5E5E7;
+  --ink-light: #B0B0B5;
+  --text-whisper: rgba(245, 245, 247, 0.22);
+  --text-dim: rgba(245, 245, 247, 0.35);
+  --text-muted: rgba(245, 245, 247, 0.55);
+  --text-secondary: rgba(245, 245, 247, 0.75);
+
+  --border-whisper: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-soft: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.15);
+
+  --glass-bg: rgba(20, 20, 35, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.1);
+
+  --prussian: #4A9FD4;
+  --prussian-light: #6BB5E0;
+  --prussian-soft: rgba(74, 159, 212, 0.15);
+
+  --success: #4DD4AC;
+  --warning: #D4A54D;
+  --danger: #D45A5A;
+
+  --shadow-float: 0 0 0 0.5px rgba(255,255,255,0.05),
+                  0 2px 4px rgba(0,0,0,0.2),
+                  0 12px 40px rgba(0,0,0,0.3);
+  --shadow-lift: 0 0 0 0.5px rgba(255,255,255,0.08),
+                 0 8px 16px rgba(0,0,0,0.3),
+                 0 24px 64px rgba(0,0,0,0.4);
+  --shadow-gold: 0 0 60px rgba(201, 162, 39, 0.3);
+}
+
+[data-theme="dark"] body {
+  background: linear-gradient(135deg, #0A0A0F 0%, #0D0D18 50%, #0A0F15 100%);
+}

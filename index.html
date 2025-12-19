@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>JYOTI — Science of Light</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Sans+Devanagari:wght@200;300;400&display=swap" rel="stylesheet">
+  
+  <!-- Custom Font Definitions (fonts extracted from base64) -->
+  <style>
+    @font-face { 
+      font-family: 'Modern Sans'; 
+      src: url('fonts/modern-sans.otf') format('opentype'); 
+    }
+    @font-face { 
+      font-family: 'JUST Sans'; 
+      font-weight: 300; 
+      src: url('fonts/just-sans-light.otf') format('opentype'); 
+    }
+    @font-face { 
+      font-family: 'JUST Sans'; 
+      font-weight: 400; 
+      src: url('fonts/just-sans-regular.otf') format('opentype'); 
+    }
+    @font-face { 
+      font-family: 'JUST Sans'; 
+      font-weight: 700; 
+      src: url('fonts/just-sans-bold.otf') format('opentype'); 
+    }
+    /* Fallback for weights 200 and 800 */
+    @font-face { 
+      font-family: 'JUST Sans'; 
+      font-weight: 200; 
+      src: url('fonts/just-sans-light.otf') format('opentype'); 
+    }
+    @font-face { 
+      font-family: 'JUST Sans'; 
+      font-weight: 800; 
+      src: url('fonts/just-sans-bold.otf') format('opentype'); 
+    }
+  </style>
+  
+  <!-- CSS Design System -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  
+  <!-- jsPDF for PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <!-- Ambient Dasha Background -->
+  <div class="dasha-ambient" id="dasha-ambient"></div>
+  
+  <!-- Sound Toggle -->
+  <button class="sound-toggle" id="sound-toggle" onclick="toggleSound()" title="Toggle ambient sound">
+    <span id="sound-icon">🔇</span>
+  </button>
+  
+  <!-- Theme Toggle -->
+  <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+    <span id="theme-icon">🌙</span>
+  </button>
+
+  <!-- Loading Overlay with Constellation Animation -->
+  <div id="loading-overlay" class="loading-overlay">
+    <div class="constellation-container">
+      <svg class="constellation-svg" viewBox="0 0 200 200">
+        <!-- Stars that appear one by one -->
+        <circle class="star star-1" cx="100" cy="30" r="3" />
+        <circle class="star star-2" cx="40" cy="70" r="2.5" />
+        <circle class="star star-3" cx="160" cy="70" r="2.5" />
+        <circle class="star star-4" cx="60" cy="130" r="2" />
+        <circle class="star star-5" cx="140" cy="130" r="2" />
+        <circle class="star star-6" cx="100" cy="170" r="3" />
+        <!-- Lines connecting stars -->
+        <line class="star-line line-1" x1="100" y1="30" x2="40" y2="70" />
+        <line class="star-line line-2" x1="100" y1="30" x2="160" y2="70" />
+        <line class="star-line line-3" x1="40" y1="70" x2="60" y2="130" />
+        <line class="star-line line-4" x1="160" y1="70" x2="140" y2="130" />
+        <line class="star-line line-5" x1="60" y1="130" x2="100" y2="170" />
+        <line class="star-line line-6" x1="140" y1="130" x2="100" y2="170" />
+      </svg>
+    </div>
+    <div class="loading-title">JYOTI</div>
+    <p class="loading-text" id="loading-text">The stars are aligning...</p>
+  </div>
+
+  <!-- THE THRESHOLD — Entry Experience -->
+  <section id="threshold" class="threshold">
+    <!-- Animated Starfield Background -->
+    <div class="starfield" id="starfield"></div>
+    
+    <!-- Shooting Stars -->
+    <div class="shooting-stars" id="shooting-stars"></div>
+    
+    <!-- Floating Golden Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Atmospheric Glow -->
+    <div class="atmospheric-glow"></div>
+    
+    <!-- Breathing Mandala Background -->
+    <div class="mandala-bg">
+      <div class="mandala-ring"></div>
+      <div class="mandala-ring"></div>
+      <div class="mandala-ring"></div>
+      <div class="mandala-ring"></div>
+      <div class="mandala-ring"></div>
+    </div>
+
+    <!-- Logo -->
+    <div class="threshold-logo">
+      <div class="logo-star" id="logo-star" title="Triple-tap for settings">✦</div>
+      <h1 class="logo-title">JYOTI</h1>
+      <p class="logo-tagline">Science of Light</p>
+    </div>
+
+    <!-- Entry Form -->
+    <div class="threshold-form">
+      <form id="birth-form">
+        <!-- Step 1: Location -->
+        <div id="step-location" class="entry-step active">
+          <div class="location-input-wrapper">
+            <input 
+              type="text" 
+              id="location-search" 
+              class="location-input" 
+              placeholder="Where were you born?"
+              autocomplete="off"
+            />
+            <div id="autocomplete-dropdown" class="autocomplete-dropdown"></div>
+          </div>
+        </div>
+
+        <!-- Step 2: Location Confirmed + Details -->
+        <div id="step-details" class="entry-step">
+          <div id="location-confirmed" class="location-confirmed">
+            <div>
+              <div class="location-confirmed-text" id="confirmed-place"></div>
+              <div class="location-confirmed-coords" id="confirmed-coords"></div>
+            </div>
+            <button type="button" class="location-edit-btn" onclick="editLocation()">Change</button>
+          </div>
+
+          <div class="name-input-wrapper">
+            <input type="text" id="name" class="name-input" placeholder="Your name" required />
+          </div>
+
+          <div class="datetime-grid">
+            <div class="form-field">
+              <label class="field-label">Date of Birth</label>
+              <input type="date" id="dob" class="field-input" required />
+            </div>
+            <div class="form-field">
+              <label class="field-label">Time of Birth</label>
+              <input type="text" id="tob" class="field-input" placeholder="14:00 or 2:00 PM" required 
+                     pattern=".*" title="Enter time as 14:00, 14.00, 2pm, 2:00 PM, etc." />
+              <span style="font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; display: block;">
+                Formats: 14:00 • 14.00 • 2pm • 2:00 PM
+              </span>
+            </div>
+          </div>
+
+          <!-- Hidden fields for lat/lon/tz -->
+          <input type="hidden" id="lat" />
+          <input type="hidden" id="lon" />
+          <input type="hidden" id="tz" />
+
+          <button type="submit" class="btn-primary" id="submit-btn">
+            Illuminate My Chart
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- THE LEARNING TEMPLE -->
+  <section id="learning-section" class="learning-section hidden">
+    <div class="learning-header">
+      <a class="learning-back" onclick="hideLearning()">← Return to Entry</a>
+      <p class="whisper">Introduction</p>
+      <h2 class="display-lg">Understanding Jyotish</h2>
+      <p class="body-md" style="max-width: 600px; margin: var(--space-sm) auto 0;">
+        Jyotish (Sanskrit: ज्योतिष) means "Science of Light" — the ancient Vedic system of understanding life through celestial patterns.
+      </p>
+    </div>
+
+    <div class="learning-content" id="learning-content"></div>
+  </section>
+
+  <!-- THE SANCTUM — Results Dashboard -->
+  <section id="sanctum" class="sanctum hidden">
+    <!-- Three-Point Anchor Bar -->
+    <div class="anchor-bar">
+      <div class="anchor-bar-inner">
+        <div class="anchor-point">
+          <span class="anchor-glyph" id="anchor-lagna-glyph">♈</span>
+          <div class="anchor-info">
+            <span class="anchor-label">Rising</span>
+            <span class="anchor-value" id="anchor-lagna">Aries</span>
+          </div>
+        </div>
+        <div class="anchor-point">
+          <span class="anchor-glyph" id="anchor-ak-glyph">♄</span>
+          <div class="anchor-info">
+            <span class="anchor-label">Soul Teacher</span>
+            <span class="anchor-value" id="anchor-ak">Saturn</span>
+          </div>
+        </div>
+        <div class="anchor-point">
+          <span class="anchor-glyph" id="anchor-dasha-glyph">☽</span>
+          <div class="anchor-info">
+            <span class="anchor-label">Current Dasha</span>
+            <span class="anchor-value" id="anchor-dasha">Moon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-section">
+      <div class="nav-pills">
+        <button class="nav-pill active" data-section="overview">Overview</button>
+        <button class="nav-pill" data-section="chart">Chart</button>
+        <button class="nav-pill" data-section="planets">Grahas</button>
+        <button class="nav-pill" data-section="houses">Bhāvas</button>
+        <button class="nav-pill" data-section="dashas">Timing</button>
+        <button class="nav-pill" data-section="prashna">Oracle ✦</button>
+        <button class="nav-pill" data-section="narrative">Soul Story</button>
+        <button class="nav-pill" data-section="learn">Learn ✧</button>
+        <button class="nav-pill" data-section="glossary">Glossary</button>
+      </div>
+    </nav>
+
+    <!-- Content Area -->
+    <div class="content-area" id="content-area"></div>
+
+    <!-- Disclaimer -->
+    <div class="disclaimer">
+      <h4>The 70/30 Principle</h4>
+      <p>~70% of life reflects Prarabdha Karma (patterns already in motion), while ~30% remains Kriyaman Karma (your response in this moment). The chart illuminates the weather; you choose how to dress.</p>
+    </div>
+  </section>
+
+<!-- Error handler for script loading -->
+<script>
+  window.jyotiLoaded = false;
+  setTimeout(function() {
+    if (!window.jyotiLoaded) {
+      var loadingText = document.getElementById('loading-text');
+      if (loadingText) {
+        loadingText.innerHTML = '⚠️ Loading failed<br><small style="font-size:0.7em;">Check internet connection or try refreshing</small>';
+      }
+      console.error('JYOTI script failed to load within 15 seconds');
+    }
+  }, 15000);
+</script>
+
+<!-- Data Modules (must load before main app) -->
+<script src="js/constants.js"></script>
+<script src="data/content.js"></script>
+
+<!-- Main Application -->
+<script src="js/app.js"></script>
+
+</body>
+</html>
