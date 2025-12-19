@@ -1262,6 +1262,16 @@ function renderEnhancedChart() {
       `}
 
     </div>
+
+    <!-- Modal for house/planet info (REQUIRED for modals to work) -->
+    <div class="chart-modal-overlay" id="chart-modal-overlay" onclick="closeChartModal(event)">
+      <div class="chart-modal" id="chart-modal">
+        <button class="modal-close" onclick="closeChartModal()">×</button>
+        <div id="chart-modal-content">
+          <!-- Filled dynamically -->
+        </div>
+      </div>
+    </div>
   `;
 }
 
@@ -1303,7 +1313,7 @@ function renderLargeSquareChart() {
         </div>
         <div class="sign-name">${SIGNS[sign]}</div>
         <div class="cell-planets">${planetHtml}</div>
-        ${planetsHere.length === 0 && bhava ? `<div class="house-hint">${bhava.shortName || ''}</div>` : ''}
+        ${planetsHere.length === 0 && bhava ? `<div class="house-hint">${bhava.english || ''}</div>` : ''}
       </div>
     `;
   }).join('');
