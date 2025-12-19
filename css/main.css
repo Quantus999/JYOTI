@@ -4207,15 +4207,18 @@ body {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, 1fr);
-  gap: 4px;
+  gap: 1px;
+  background: var(--stone);
   max-width: 500px;
   margin: 0 auto;
   aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--stone);
 }
 
 .chart-cell-interactive {
   background: var(--bg-card);
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -4223,44 +4226,48 @@ body {
   padding: 8px;
   cursor: pointer;
   position: relative;
-  /* Use box-shadow for stable border rendering */
-  box-shadow: inset 0 0 0 1.5px var(--stone);
 }
 
 .chart-cell-interactive:hover {
   background: var(--gold-soft);
-  box-shadow: inset 0 0 0 2px var(--gold);
 }
 
 .chart-cell-interactive.lagna {
   background: var(--champagne-soft);
-  box-shadow: inset 0 0 0 2px var(--gold);
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
 }
 
 .chart-cell-interactive.empty {
-  background: transparent;
-  box-shadow: none;
+  background: var(--bg-sanctuary);
   cursor: default;
 }
 
 .chart-cell-interactive.empty:hover {
-  background: transparent;
-  box-shadow: none;
+  background: var(--bg-sanctuary);
+}
+
+[data-theme="dark"] .si-chart-interactive {
+  background: rgba(201, 162, 39, 0.15);
+  border-color: rgba(201, 162, 39, 0.15);
 }
 
 [data-theme="dark"] .chart-cell-interactive {
-  background: rgba(255, 255, 255, 0.03);
-  box-shadow: inset 0 0 0 1.5px rgba(201, 162, 39, 0.2);
+  background: rgba(15, 15, 20, 0.95);
 }
 
 [data-theme="dark"] .chart-cell-interactive:hover {
-  background: rgba(201, 162, 39, 0.15);
-  box-shadow: inset 0 0 0 2px var(--gold);
+  background: rgba(201, 162, 39, 0.12);
 }
 
 [data-theme="dark"] .chart-cell-interactive.lagna {
-  background: rgba(201, 162, 39, 0.12);
-  box-shadow: inset 0 0 0 2px rgba(201, 162, 39, 0.4);
+  background: rgba(201, 162, 39, 0.08);
+  outline: 2px solid var(--gold);
+  outline-offset: -2px;
+}
+
+[data-theme="dark"] .chart-cell-interactive.empty {
+  background: rgba(20, 20, 25, 0.8);
 }
 
 .cell-house-num {

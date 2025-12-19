@@ -1168,37 +1168,18 @@
    OVERVIEW SECTION — Simplified Features
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Overview breathing - more subtle */
-.overview-chart-breathing {
-  animation: chart-breathe-slow 15s ease-in-out infinite;
+/* Overview chart - simplified, no animations */
+.overview-chart-simple {
+  /* Inherits grid-gap borders from .si-chart-interactive */
 }
 
-/* Overview tooltips - brief */
-.overview-tooltip {
-  max-width: 180px;
-  font-size: 0.75rem;
-}
-
-/* Overview click to navigate */
-.overview-chart-cell {
+/* Overview cells - clean hover only */
+.overview-cell {
   cursor: pointer;
-  transition: all 0.3s ease;
 }
 
-.overview-chart-cell:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-}
-
-.overview-chart-cell:active::after {
-  content: 'View in Chart →';
-  position: absolute;
-  bottom: -24px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.6rem;
-  color: var(--prussian);
-  white-space: nowrap;
+.overview-cell:hover {
+  background: var(--gold-soft);
 }
 
 /* Overview transit teaser */
