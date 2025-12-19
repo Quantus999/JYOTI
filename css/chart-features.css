@@ -1,248 +1,422 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   JYOTI Chart Features — Pure Minimalism
-   Billionaire × Apple × AI 2050 × Best UX/UI
+   JYOTI Chart Features — Highest Elegance
+   Refined colors, subtle gradients, impeccable typography
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   CHART SECTION — Radical Simplicity
+   CHART SECTION — Refined Elegance
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* Empty state */
 .chart-empty {
   text-align: center;
   padding: 120px 40px;
+  background: linear-gradient(180deg, transparent 0%, rgba(184,151,107,0.03) 100%);
 }
 
 .chart-empty-glyph {
-  font-size: 3rem;
-  color: var(--gold);
-  opacity: 0.3;
+  font-size: 4rem;
+  background: linear-gradient(135deg, #c4a46d 0%, #8b7355 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin-bottom: 32px;
 }
 
 .chart-empty h3 {
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 400;
+  font-size: 1.75rem;
+  font-weight: 300;
   color: var(--ink);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
 }
 
 .chart-empty p {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--text-muted);
-  margin-bottom: 32px;
+  margin-bottom: 40px;
+  line-height: 1.6;
 }
 
 .chart-empty-btn {
-  padding: 14px 40px;
-  background: var(--prussian);
+  padding: 16px 48px;
+  background: linear-gradient(135deg, #1a3a4a 0%, #0d2530 100%);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.02em;
 }
 
 .chart-empty-btn:hover {
-  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,49,83,0.25);
 }
 
 /* Main container */
 .chart-pure {
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 auto;
-  padding: 40px 24px 60px;
+  padding: 48px 24px 80px;
 }
 
 /* Chart stage — the sacred space */
 .chart-stage {
   display: flex;
   justify-content: center;
-  margin-bottom: 40px;
+  margin-bottom: 48px;
 }
 
 .chart-frame {
   width: 100%;
-  max-width: 420px;
-  background: white;
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 2px 40px rgba(0,0,0,0.04);
+  max-width: 440px;
+  background: linear-gradient(180deg, #ffffff 0%, #fdfcfa 100%);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.02),
+    0 4px 16px rgba(0,0,0,0.04),
+    0 12px 48px rgba(0,0,0,0.03);
+  border: 1px solid rgba(184,151,107,0.08);
 }
 
-/* Essence pills — three truths */
+/* Chart cells - refined */
+.chart-frame .si-chart-interactive {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.chart-frame .chart-cell-interactive {
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.chart-frame .chart-cell-interactive:hover {
+  background: rgba(184,151,107,0.08) !important;
+  transform: scale(1.02);
+}
+
+.chart-frame .chart-cell-interactive.lagna {
+  background: linear-gradient(135deg, rgba(196,164,109,0.12) 0%, rgba(196,164,109,0.06) 100%) !important;
+}
+
+/* Sign glyphs - elegant gold */
+.cell-sign-glyph {
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, #c4a46d 0%, #a08050 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Essence pills — refined capsules */
 .chart-essence {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 32px;
+  gap: 16px;
+  margin-bottom: 40px;
   flex-wrap: wrap;
 }
 
 .essence-pill {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  background: white;
-  border: 1px solid var(--border);
+  gap: 10px;
+  padding: 12px 24px;
+  background: linear-gradient(180deg, #ffffff 0%, #faf9f7 100%);
+  border: 1px solid rgba(184,151,107,0.15);
   border-radius: 100px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: var(--ink);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
 }
 
 .essence-pill:hover {
-  border-color: var(--gold);
-  background: var(--gold-soft);
+  border-color: rgba(184,151,107,0.4);
+  background: linear-gradient(180deg, #fdfbf7 0%, #f8f4ed 100%);
+  box-shadow: 0 4px 16px rgba(184,151,107,0.12);
+  transform: translateY(-1px);
 }
 
 .pill-glyph {
-  font-size: 1.1rem;
-  color: var(--gold);
+  font-size: 1.25rem;
+  background: linear-gradient(135deg, #c4a46d 0%, #8b7355 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .pill-text {
   font-weight: 500;
+  letter-spacing: 0.01em;
 }
 
-/* Filter chips */
+/* Filter chips - elegant */
 .chart-filters {
   display: flex;
   justify-content: center;
-  gap: 8px;
-  margin-bottom: 32px;
+  gap: 10px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
 }
 
 .filter-chip {
-  padding: 8px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 20px;
   background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  font-size: 0.75rem;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  font-size: 0.8rem;
   color: var(--text-muted);
   cursor: pointer;
-  transition: all 0.2s;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  transition: all 0.25s ease;
 }
 
 .filter-chip:hover {
-  border-color: var(--stone);
+  border-color: rgba(184,151,107,0.4);
+  background: rgba(184,151,107,0.04);
   color: var(--ink);
 }
 
 .filter-chip.active {
-  background: var(--prussian);
-  border-color: var(--prussian);
+  background: linear-gradient(135deg, #1a3a4a 0%, #0d2530 100%);
+  border-color: transparent;
   color: white;
+  box-shadow: 0 4px 16px rgba(0,49,83,0.2);
 }
 
-/* Chart with active filter */
+.filter-chip.active .chip-houses {
+  color: rgba(255,255,255,0.7);
+}
+
+.chip-label {
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+
+.chip-houses {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.filter-chip.clear-chip {
+  padding: 10px 16px;
+  opacity: 0.6;
+}
+
+.filter-chip.clear-chip:hover {
+  opacity: 1;
+}
+
+/* Filter explanation */
+.filter-explanation {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--ink);
+  margin-bottom: 40px;
+  min-height: 24px;
+  line-height: 1.6;
+}
+
+.filter-explanation:empty {
+  display: none;
+}
+
+.explanation-icon {
+  color: var(--gold);
+  margin-right: 4px;
+}
+
+.filter-explanation strong {
+  font-weight: 600;
+  color: var(--prussian);
+}
+
+/* Chart with active filter — beautiful highlights */
 .chart-frame.kendra .chart-cell-interactive[data-house="1"],
 .chart-frame.kendra .chart-cell-interactive[data-house="4"],
 .chart-frame.kendra .chart-cell-interactive[data-house="7"],
 .chart-frame.kendra .chart-cell-interactive[data-house="10"] {
-  background: rgba(0, 49, 83, 0.08) !important;
+  background: linear-gradient(135deg, rgba(26,58,74,0.12) 0%, rgba(26,58,74,0.06) 100%) !important;
+  box-shadow: inset 0 0 0 1px rgba(26,58,74,0.15);
 }
 
 .chart-frame.trikona .chart-cell-interactive[data-house="1"],
 .chart-frame.trikona .chart-cell-interactive[data-house="5"],
 .chart-frame.trikona .chart-cell-interactive[data-house="9"] {
-  background: rgba(184, 151, 107, 0.15) !important;
+  background: linear-gradient(135deg, rgba(196,164,109,0.18) 0%, rgba(196,164,109,0.08) 100%) !important;
+  box-shadow: inset 0 0 0 1px rgba(196,164,109,0.25);
 }
 
 .chart-frame.dusthana .chart-cell-interactive[data-house="6"],
 .chart-frame.dusthana .chart-cell-interactive[data-house="8"],
 .chart-frame.dusthana .chart-cell-interactive[data-house="12"] {
-  background: rgba(100, 116, 139, 0.1) !important;
+  background: linear-gradient(135deg, rgba(100,116,139,0.12) 0%, rgba(100,116,139,0.06) 100%) !important;
+  box-shadow: inset 0 0 0 1px rgba(100,116,139,0.15);
 }
 
-/* Actions — minimal links */
+/* Actions — refined links */
 .chart-actions {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: 24px;
 }
 
 .action-link {
   background: none;
   border: none;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--text-muted);
   cursor: pointer;
-  padding: 8px 0;
-  transition: color 0.2s;
+  padding: 8px 4px;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.action-link::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: currentColor;
+  opacity: 0;
+  transform: scaleX(0);
+  transition: all 0.2s;
 }
 
 .action-link:hover {
   color: var(--prussian);
 }
 
-.action-dot {
-  color: var(--border);
+.action-link:hover::after {
+  opacity: 0.3;
+  transform: scaleX(1);
 }
 
-/* Sacred mode */
+.action-dot {
+  color: rgba(0,0,0,0.15);
+  font-size: 0.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SACRED MODE — Immersive contemplation
+   ═══════════════════════════════════════════════════════════════════════════ */
 .chart-pure.chart-sacred {
-  background: #0a0a0f;
+  background: radial-gradient(ellipse at center top, #12141a 0%, #08090c 100%);
   min-height: 100vh;
-  margin: -24px;
-  padding: 60px 40px;
+  margin: -24px -24px 0;
+  padding: 80px 40px;
+  position: relative;
+}
+
+.chart-pure.chart-sacred::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(196,164,109,0.03) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(196,164,109,0.02) 0%, transparent 30%);
+  pointer-events: none;
+}
+
+.chart-sacred .chart-stage {
+  margin-bottom: 60px;
 }
 
 .chart-sacred .chart-frame {
   background: transparent;
   box-shadow: none;
-  border: 1px solid rgba(184, 151, 107, 0.2);
+  border: 1px solid rgba(196,164,109,0.15);
+  padding: 24px;
 }
 
 .chart-sacred .si-chart-interactive {
   background: transparent !important;
+  gap: 1px;
 }
 
 .chart-sacred .chart-cell-interactive {
-  background: transparent !important;
-  border-color: rgba(184, 151, 107, 0.15) !important;
+  background: rgba(255,255,255,0.02) !important;
+  border-color: rgba(196,164,109,0.1) !important;
+}
+
+.chart-sacred .chart-cell-interactive:hover {
+  background: rgba(196,164,109,0.08) !important;
 }
 
 .chart-sacred .chart-cell-interactive.lagna {
-  border-color: var(--gold) !important;
+  background: rgba(196,164,109,0.06) !important;
+  border-color: rgba(196,164,109,0.4) !important;
+  box-shadow: 0 0 20px rgba(196,164,109,0.1);
 }
 
-.chart-sacred .cell-sign-interactive,
+.chart-sacred .cell-sign-glyph,
 .chart-sacred .cell-house-num {
-  opacity: 0.3;
+  opacity: 0.25;
+  color: rgba(255,255,255,0.4);
+  -webkit-text-fill-color: rgba(255,255,255,0.25);
 }
 
 .chart-sacred .planet-glyph-interactive {
-  color: var(--gold) !important;
+  color: #c4a46d !important;
+  text-shadow: 0 0 20px rgba(196,164,109,0.5);
 }
 
-.chart-sacred .chart-essence,
+.chart-sacred .chart-essence {
+  opacity: 0;
+  visibility: hidden;
+}
+
 .chart-sacred .chart-filters {
   opacity: 0;
+  visibility: hidden;
+}
+
+.chart-sacred .filter-explanation {
+  display: none;
 }
 
 .chart-sacred .chart-actions {
   position: fixed;
-  bottom: 40px;
+  bottom: 48px;
   left: 50%;
   transform: translateX(-50%);
+  background: rgba(0,0,0,0.4);
+  padding: 12px 24px;
+  border-radius: 100px;
+  backdrop-filter: blur(10px);
 }
 
-.chart-sacred .action-link,
-.chart-sacred .action-dot {
-  color: rgba(255,255,255,0.3);
+.chart-sacred .action-link {
+  color: rgba(255,255,255,0.4);
 }
 
 .chart-sacred .action-link:hover {
-  color: var(--gold);
+  color: #c4a46d;
+}
+
+.chart-sacred .action-link::after {
+  display: none;
+}
+
+.chart-sacred .action-dot {
+  color: rgba(255,255,255,0.15);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

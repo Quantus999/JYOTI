@@ -1154,21 +1154,21 @@ function renderEnhancedChart() {
 
   const c = chartData;
   const moon = c.planets.find(p => p.name === 'Moon');
-  const sun = c.planets.find(p => p.name === 'Sun');
   const dashaPlanet = c.dasha?.maha?.planet || 'Saturn';
   const highlightClass = ChartFeatures.highlightCategory || '';
+  const sacredClass = ChartFeatures.silentMode ? 'chart-sacred' : '';
 
   return `
-    <div class="chart-pure ${ChartFeatures.silentMode ? 'chart-sacred' : ''}">
+    <div class="chart-pure ${sacredClass}">
 
       <!-- THE CHART — Centered, breathing, sacred -->
       <div class="chart-stage">
         <div id="chart-main-container" class="chart-frame ${highlightClass}">
-          ${renderSquareChart()}
+          ${renderSquareChartSimple()}
         </div>
       </div>
 
-      <!-- ESSENCE — Three truths, nothing more -->
+      <!-- ESSENCE — Three truths -->
       <div class="chart-essence">
         <button class="essence-pill" onclick="showHouseModal(1)">
           <span class="pill-glyph">${SIGN_GLYPHS[c.lagna]}</span>
@@ -1184,32 +1184,49 @@ function renderEnhancedChart() {
         </button>
       </div>
 
-      <!-- FILTERS — Subtle, functional -->
+      <!-- FILTERS — With explanations -->
       <div class="chart-filters">
         <button class="filter-chip ${ChartFeatures.highlightCategory === 'kendra' ? 'active' : ''}"
-                onclick="window.applyChartFilter('kendra')">
-          Kendra
+                onclick="window.applyChartFilter('kendra')"
+                title="The Four Pillars: Houses 1, 4, 7, 10 — Self, Home, Partner, Career">
+          <span class="chip-label">Kendra</span>
+          <span class="chip-houses">1·4·7·10</span>
         </button>
         <button class="filter-chip ${ChartFeatures.highlightCategory === 'trikona' ? 'active' : ''}"
-                onclick="window.applyChartFilter('trikona')">
-          Trikona
+                onclick="window.applyChartFilter('trikona')"
+                title="The Trines of Fortune: Houses 1, 5, 9 — Dharma, Creativity, Wisdom">
+          <span class="chip-label">Trikona</span>
+          <span class="chip-houses">1·5·9</span>
         </button>
         <button class="filter-chip ${ChartFeatures.highlightCategory === 'dusthana' ? 'active' : ''}"
-                onclick="window.applyChartFilter('dusthana')">
-          Dusthana
+                onclick="window.applyChartFilter('dusthana')"
+                title="Houses of Challenge: Houses 6, 8, 12 — Obstacles, Transformation, Liberation">
+          <span class="chip-label">Dusthana</span>
+          <span class="chip-houses">6·8·12</span>
         </button>
-        <button class="filter-chip" onclick="window.applyChartFilter(null)">
+        <button class="filter-chip clear-chip" onclick="window.applyChartFilter(null)">
           Clear
         </button>
       </div>
 
-      <!-- ACTIONS — Two choices, that's all -->
+      <!-- Filter explanation -->
+      <div class="filter-explanation" id="filter-explanation">
+        ${ChartFeatures.highlightCategory === 'kendra' ?
+          '<span class="explanation-icon">◇</span> <strong>Kendra</strong> — The four pillars of life. Planets here are powerful and prominent.' :
+          ChartFeatures.highlightCategory === 'trikona' ?
+          '<span class="explanation-icon">△</span> <strong>Trikona</strong> — Houses of dharma, fortune, and past-life blessings. Most auspicious positions.' :
+          ChartFeatures.highlightCategory === 'dusthana' ?
+          '<span class="explanation-icon">◯</span> <strong>Dusthana</strong> — Houses of challenge and transformation. Growth through difficulty.' :
+          ''}
+      </div>
+
+      <!-- ACTIONS -->
       <div class="chart-actions">
         <button class="action-link" onclick="startTeachMode()">
           Teach me this chart
         </button>
         <span class="action-dot">·</span>
-        <button class="action-link" onclick="toggleSilentMode(!ChartFeatures.silentMode)">
+        <button class="action-link" onclick="window.toggleSacredMode()">
           ${ChartFeatures.silentMode ? 'Exit sacred mode' : 'Sacred mode'}
         </button>
       </div>
@@ -1217,6 +1234,55 @@ function renderEnhancedChart() {
     </div>
   `;
 }
+
+// Simplified square chart for new design
+function renderSquareChartSimple() {
+  if (!chartData) return '<div>No chart data</div>';
+
+  const c = chartData;
+  const layout = [11,0,1,2,10,null,null,3,9,null,null,4,8,7,6,5];
+
+  let cells = layout.map((signOffset) => {
+    if (signOffset === null) {
+      return '<div class="chart-cell-interactive empty"></div>';
+    }
+
+    const sign = (c.lagna + signOffset) % 12;
+    const houseNum = signOffset + 1;
+    const planetsHere = c.planets.filter(p => p.house === houseNum);
+    const isLagna = signOffset === 0;
+
+    const planetHtml = planetsHere.map(p => {
+      let dignityClass = p.exalted ? ' exalted' : p.debilitated ? ' debilitated' : '';
+      return `<span class="planet-glyph-interactive${dignityClass}${p.isAK ? ' ak' : ''}"
+                   onclick="event.stopPropagation(); showPlanetModal('${p.name}')"
+                   title="${p.name}${p.retro ? ' ℞' : ''}">${p.glyph}</span>`;
+    }).join('');
+
+    return `
+      <div class="chart-cell-interactive${isLagna ? ' lagna' : ''}"
+           onclick="showHouseModal(${houseNum})"
+           data-house="${houseNum}">
+        <span class="cell-house-num">${houseNum}</span>
+        <span class="cell-sign-glyph">${SIGN_GLYPHS[sign]}</span>
+        <div class="cell-planets-interactive">${planetHtml}</div>
+      </div>
+    `;
+  }).join('');
+
+  return `<div class="si-chart-interactive">${cells}</div>`;
+}
+
+// Toggle sacred mode and re-render
+function toggleSacredMode() {
+  ChartFeatures.silentMode = !ChartFeatures.silentMode;
+  const contentArea = document.getElementById('content-area');
+  if (contentArea && typeof window.renderEnhancedChart === 'function') {
+    contentArea.innerHTML = window.renderEnhancedChart();
+  }
+}
+
+window.toggleSacredMode = toggleSacredMode;
 
 // Apply chart filter (Kendra, Trikona, Dusthana)
 function applyChartFilter(category) {
