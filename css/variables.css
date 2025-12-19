@@ -4,33 +4,33 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ─── Colors: Sacred Space (60%) ─── */
-  --bg: #FFFFFF;
-  --bg-warm: #FDFCFA;
-  --bg-sanctuary: #F9F7F3;
-  --bg-card: #FFFFFF;
-  --bg-input: #F5F2EB;
-  --bg-hover: #EDE8DC;
+  /* ─── Colors: Ivory Sanctuary (60%) ─── */
+  --bg: #FFFEF8;
+  --bg-warm: #FBF9F4;
+  --bg-sanctuary: #F7F5F0;
+  --bg-card: #FFFFFE;
+  --bg-input: #F3F1EA;
+  --bg-hover: #EBE8E0;
 
   /* ─── Colors: Temple Stone (25%) ─── */
-  --stone: #E8E2D2;
-  --stone-soft: rgba(232, 226, 210, 0.5);
+  --stone: #E5DFD0;
+  --stone-soft: rgba(229, 223, 208, 0.5);
 
   /* ─── Colors: Sacred Metals (10%) ─── */
-  --brass: #A59564;
-  --brass-soft: rgba(165, 149, 100, 0.12);
-  --brass-glow: rgba(165, 149, 100, 0.06);
-  --sand: #D4C5A3;
-  --sand-soft: rgba(212, 197, 163, 0.15);
-  --champagne: #EDE6B7;
-  --champagne-soft: rgba(237, 230, 183, 0.25);
+  --brass: #9C8B6E;
+  --brass-soft: rgba(156, 139, 110, 0.12);
+  --brass-glow: rgba(156, 139, 110, 0.06);
+  --sand: #C9BBA0;
+  --sand-soft: rgba(201, 187, 160, 0.15);
+  --champagne: #D4C9A8;
+  --champagne-soft: rgba(212, 201, 168, 0.2);
 
-  /* ─── Colors: Gold Accent ─── */
-  --gold: #C9A227;
-  --gold-light: #E4C15A;
-  --gold-dark: #9A7B1A;
-  --gold-soft: rgba(201, 162, 39, 0.15);
-  --gold-glow: rgba(201, 162, 39, 0.25);
+  /* ─── Colors: Champagne Gold Accent ─── */
+  --gold: #B8976B;
+  --gold-light: #D4B896;
+  --gold-dark: #8A7050;
+  --gold-soft: rgba(184, 151, 107, 0.12);
+  --gold-glow: rgba(184, 151, 107, 0.18);
 
   /* ─── Colors: Prussian Blue (Primary) ─── */
   --prussian: #003153;
