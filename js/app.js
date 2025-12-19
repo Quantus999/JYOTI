@@ -5391,6 +5391,36 @@ window.navigateLesson = function(lessonKey) {
   }
 };
 
+// Enhanced overview chart with breathing, tooltips, and navigation
+function renderOverviewChartInner(c, layout) {
+  // Use enhanced version if available
+  if (typeof renderEnhancedOverviewChart === 'function') {
+    return renderEnhancedOverviewChart();
+  }
+
+  // Fallback to basic version
+  const dashaPlanet = c.dasha?.maha?.planet || 'Saturn';
+
+  return `
+    <div class="si-chart-interactive overview-chart-breathing" data-dasha="${dashaPlanet}">
+      ${layout.map((signOffset, idx) => {
+        if (signOffset === null) {
+          return '<div class="chart-cell-interactive empty"></div>';
+        }
+        const sign = (c.lagna + signOffset) % 12;
+        const houseNum = signOffset + 1;
+        const planetsHere = c.planets.filter(p => p.house === houseNum);
+        const isLagna = signOffset === 0;
+
+        return '<div class="chart-cell-interactive' + (isLagna ? ' lagna' : '') + '" onclick="showHouseModal(' + houseNum + ')" data-house="' + houseNum + '"><span class="cell-house-num">' + houseNum + '</span><span class="cell-sign-interactive">' + SIGNS[sign] + '</span><div class="cell-planets-interactive">' + planetsHere.map(p => '<span class="planet-glyph-interactive' + (p.exalted ? ' exalted' : '') + (p.debilitated ? ' debilitated' : '') + (p.isAK ? ' ak' : '') + '" onclick="event.stopPropagation(); showPlanetModal(\'' + p.name + '\')" title="' + p.name + '">' + p.glyph + '</span>').join('') + '</div></div>';
+      }).join('')}
+    </div>
+    <p style="text-align: center; font-size: 0.65rem; color: var(--text-muted); margin-top: 12px;">
+      Click any cell to explore • Hover for quick info
+    </p>
+  `;
+}
+
 function renderOverview() {
   const c = chartData;
   const moon = c.planets.find(p => p.name === 'Moon');
@@ -5459,41 +5489,12 @@ function renderOverview() {
           <div class="bento-sub">${ordinal(ak?.house||1)} House • ${SIGNS[ak?.sign||0]}</div>
         </div>
         
-        <!-- Interactive Chart Card (Large) -->
+        <!-- Interactive Chart Card (Large) - Enhanced with tooltips, breathing, retrograde indicators -->
         <div class="bento-card large" style="cursor: default;">
           <div class="bento-label" style="margin-bottom: 12px;">Interactive Birth Chart</div>
-          <div class="si-chart-interactive">
-            ${layout.map((signOffset, idx) => {
-              if (signOffset === null) {
-                return '<div class="chart-cell-interactive empty"></div>';
-              }
-              const sign = (c.lagna + signOffset) % 12;
-              const houseNum = signOffset + 1;
-              const planetsHere = c.planets.filter(p => p.house === houseNum);
-              const isLagna = signOffset === 0;
-              
-              return `
-                <div class="chart-cell-interactive${isLagna ? ' lagna' : ''}" 
-                     onclick="showHouseModal(${houseNum})"
-                     data-house="${houseNum}">
-                  <span class="cell-house-num">${houseNum}</span>
-                  <span class="cell-sign-interactive">${SIGNS[sign]}</span>
-                  <div class="cell-planets-interactive">
-                    ${planetsHere.map(p => `
-                      <span class="planet-glyph-interactive${p.exalted ? ' exalted' : ''}${p.debilitated ? ' debilitated' : ''}${p.isAK ? ' ak' : ''}"
-                            onclick="event.stopPropagation(); showPlanetModal('${p.name}')"
-                            title="${p.name}">
-                        ${p.glyph}
-                      </span>
-                    `).join('')}
-                  </div>
-                </div>
-              `;
-            }).join('')}
+          <div id="overview-chart-container">
+            ${renderOverviewChartInner(c, layout)}
           </div>
-          <p style="text-align: center; font-size: 0.7rem; color: var(--text-muted); margin-top: 12px;">
-            Click any house or planet for details
-          </p>
         </div>
         
         <!-- Current Dasha Card (Wide) -->
@@ -8557,7 +8558,7 @@ const sections = {
   planets: renderPlanets,
   houses: renderHouses,
   dashas: renderDashas,
-  chart: renderChart,
+  chart: () => typeof renderEnhancedChart === 'function' ? renderEnhancedChart() : renderChart(),
   glossary: renderGlossary
 };
 
