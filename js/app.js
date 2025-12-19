@@ -2291,7 +2291,7 @@ const LEARNING_MODULES = [
 
 // Astronomy Engine is loaded via import at the top
 let astroEngineReady = true;
-let chartData = null;
+let chartData = window.chartData = null;
 let selectedLocation = null;
 let expandedPlanet = null;
 let logoTapCount = 0;
@@ -8715,7 +8715,7 @@ async function init() {
     }
     const tob = parsedTime.formatted24; // Use 24-hour format internally
     
-    chartData = computeChart(name, dob, tob, lat, lon, tz, selectedLocation.name);
+    chartData = window.chartData = computeChart(name, dob, tob, lat, lon, tz, selectedLocation.name);
     
     // Update ambient background based on current Dasha
     updateDashaAmbient(chartData.dasha?.maha?.planet);
