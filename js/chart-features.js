@@ -1134,19 +1134,19 @@ function renderChartToolbar() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ENHANCED RENDER FUNCTIONS — DRAMATIC IMPROVEMENTS 1-5
-// Observatory Metaphor • Progressive Depth • Floating Action • Essence Only
+// ENHANCED CHART — Pure Minimalism
+// Billionaire × Apple × AI 2050 × Best UX/UI
 // ═══════════════════════════════════════════════════════════════════════════
 
 function renderEnhancedChart() {
   if (!chartData || !chartData.planets) {
     return `
-      <div class="observatory-empty">
-        <div class="observatory-empty-icon">✦</div>
+      <div class="chart-empty">
+        <div class="chart-empty-glyph">✦</div>
         <h3>Your Chart Awaits</h3>
-        <p>Enter your birth details to reveal your cosmic blueprint</p>
-        <button onclick="document.getElementById('sanctum').classList.add('hidden'); document.getElementById('threshold').classList.remove('hidden');" class="observatory-btn">
-          Begin →
+        <p>Enter birth details to reveal your cosmic blueprint</p>
+        <button onclick="document.getElementById('sanctum').classList.add('hidden'); document.getElementById('threshold').classList.remove('hidden');" class="chart-empty-btn">
+          Begin
         </button>
       </div>
     `;
@@ -1154,146 +1154,86 @@ function renderEnhancedChart() {
 
   const c = chartData;
   const moon = c.planets.find(p => p.name === 'Moon');
+  const sun = c.planets.find(p => p.name === 'Sun');
   const dashaPlanet = c.dasha?.maha?.planet || 'Saturn';
+  const highlightClass = ChartFeatures.highlightCategory || '';
 
   return `
-    <div class="observatory ${ChartFeatures.silentMode ? 'sacred-mode' : ''}">
+    <div class="chart-pure ${ChartFeatures.silentMode ? 'chart-sacred' : ''}">
 
-      <!-- LAYER 1: THE CHART (Hero - 70% of attention) -->
-      <div class="observatory-chart">
-        <div id="chart-main-container" class="observatory-chart-inner">
+      <!-- THE CHART — Centered, breathing, sacred -->
+      <div class="chart-stage">
+        <div id="chart-main-container" class="chart-frame ${highlightClass}">
           ${renderSquareChart()}
         </div>
       </div>
 
-      <!-- LAYER 2: ESSENCE BAR (3 key facts) -->
-      <div class="essence-bar">
-        <div class="essence-item" onclick="showHouseModal(1)">
-          <span class="essence-glyph">${SIGN_GLYPHS[c.lagna]}</span>
-          <span class="essence-label">Rising</span>
-        </div>
-        <div class="essence-divider"></div>
-        <div class="essence-item" onclick="showPlanetModal('Moon')">
-          <span class="essence-glyph">☽</span>
-          <span class="essence-label">${moon ? SIGNS[moon.sign] : ''}</span>
-        </div>
-        <div class="essence-divider"></div>
-        <div class="essence-item" onclick="toggleDrawer()">
-          <span class="essence-glyph">${P_GLYPHS[dashaPlanet] || '✦'}</span>
-          <span class="essence-label">${dashaPlanet} Dasha</span>
-        </div>
-      </div>
-
-      <!-- FLOATING ACTION BUTTON (Replaces toolbar) -->
-      <div class="fab-container">
-        <button class="fab-main" onclick="toggleFabMenu()" aria-label="Open menu">
-          <span class="fab-icon">✦</span>
+      <!-- ESSENCE — Three truths, nothing more -->
+      <div class="chart-essence">
+        <button class="essence-pill" onclick="showHouseModal(1)">
+          <span class="pill-glyph">${SIGN_GLYPHS[c.lagna]}</span>
+          <span class="pill-text">${SIGNS[c.lagna]} Rising</span>
         </button>
-        <div class="fab-menu" id="fab-menu">
-          <button class="fab-item" onclick="startTeachMode(); toggleFabMenu();" data-label="Teach Me">
-            <span>📖</span>
-          </button>
-          <button class="fab-item" onclick="toggleDrawer(); toggleFabMenu();" data-label="Explore">
-            <span>◎</span>
-          </button>
-          <button class="fab-item" onclick="toggleSilentMode(!ChartFeatures.silentMode); toggleFabMenu();" data-label="Sacred">
-            <span>🕯</span>
-          </button>
-          <button class="fab-item" onclick="toggleChartView(ChartFeatures.viewMode === 'wheel' ? 'square' : 'wheel'); toggleFabMenu();" data-label="View">
-            <span>◐</span>
-          </button>
-        </div>
+        <button class="essence-pill" onclick="showPlanetModal('Moon')">
+          <span class="pill-glyph">☽</span>
+          <span class="pill-text">${moon ? SIGNS[moon.sign] : ''} Moon</span>
+        </button>
+        <button class="essence-pill" onclick="showPlanetModal('${dashaPlanet}')">
+          <span class="pill-glyph">${P_GLYPHS[dashaPlanet] || '✦'}</span>
+          <span class="pill-text">${dashaPlanet} Dasha</span>
+        </button>
       </div>
 
-      <!-- LAYER 3: DRAWER (All extras - hidden by default) -->
-      <div class="chart-drawer" id="chart-drawer">
-        <div class="drawer-handle" onclick="toggleDrawer()">
-          <span></span>
-        </div>
+      <!-- FILTERS — Subtle, functional -->
+      <div class="chart-filters">
+        <button class="filter-chip ${ChartFeatures.highlightCategory === 'kendra' ? 'active' : ''}"
+                onclick="window.applyChartFilter('kendra')">
+          Kendra
+        </button>
+        <button class="filter-chip ${ChartFeatures.highlightCategory === 'trikona' ? 'active' : ''}"
+                onclick="window.applyChartFilter('trikona')">
+          Trikona
+        </button>
+        <button class="filter-chip ${ChartFeatures.highlightCategory === 'dusthana' ? 'active' : ''}"
+                onclick="window.applyChartFilter('dusthana')">
+          Dusthana
+        </button>
+        <button class="filter-chip" onclick="window.applyChartFilter(null)">
+          Clear
+        </button>
+      </div>
 
-        <div class="drawer-content">
-          <!-- Quick Actions -->
-          <div class="drawer-section">
-            <div class="drawer-row">
-              <button class="drawer-chip ${ChartFeatures.highlightCategory === 'kendra' ? 'active' : ''}" onclick="highlightHouseCategory('kendra')">
-                Kendra <span class="chip-hint">1,4,7,10</span>
-              </button>
-              <button class="drawer-chip ${ChartFeatures.highlightCategory === 'trikona' ? 'active' : ''}" onclick="highlightHouseCategory('trikona')">
-                Trikona <span class="chip-hint">1,5,9</span>
-              </button>
-              <button class="drawer-chip ${ChartFeatures.highlightCategory === 'dusthana' ? 'active' : ''}" onclick="highlightHouseCategory('dusthana')">
-                Dusthana <span class="chip-hint">6,8,12</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Chart Info -->
-          <div class="drawer-section">
-            <div class="drawer-info-grid">
-              <div class="drawer-info-card" onclick="showHouseModal(1)">
-                <div class="info-card-glyph">${SIGN_GLYPHS[c.lagna]}</div>
-                <div class="info-card-title">${SIGNS[c.lagna]}</div>
-                <div class="info-card-sub">Lagna • ${NAKSHATRAS[c.lagnaNakshatra]}</div>
-              </div>
-              <div class="drawer-info-card" onclick="showPlanetModal('Moon')">
-                <div class="info-card-glyph">☽</div>
-                <div class="info-card-title">${moon ? SIGNS[moon.sign] : '—'}</div>
-                <div class="info-card-sub">Moon • ${moon ? NAKSHATRAS[moon.nakshatra] : ''}</div>
-              </div>
-              <div class="drawer-info-card">
-                <div class="info-card-glyph">${P_GLYPHS[dashaPlanet] || '✦'}</div>
-                <div class="info-card-title">${dashaPlanet}</div>
-                <div class="info-card-sub">Mahādashā</div>
-              </div>
-              <div class="drawer-info-card" onclick="showPlanetModal('${c.atmakaraka}')">
-                <div class="info-card-glyph">◉</div>
-                <div class="info-card-title">${c.atmakaraka}</div>
-                <div class="info-card-sub">Ātmakāraka</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Legend -->
-          <div class="drawer-section">
-            <div class="drawer-legend">
-              <span><i class="legend-lagna"></i> Lagna</span>
-              <span><i class="legend-exalted"></i> Exalted</span>
-              <span><i class="legend-debilitated"></i> Debilitated</span>
-              <span><i class="legend-retro">℞</i> Retrograde</span>
-            </div>
-          </div>
-
-          <!-- Keyboard hints -->
-          <div class="drawer-section drawer-hints">
-            <kbd>T</kbd> Teach • <kbd>W</kbd> View • <kbd>M</kbd> Sacred • <kbd>ESC</kbd> Close
-          </div>
-        </div>
+      <!-- ACTIONS — Two choices, that's all -->
+      <div class="chart-actions">
+        <button class="action-link" onclick="startTeachMode()">
+          Teach me this chart
+        </button>
+        <span class="action-dot">·</span>
+        <button class="action-link" onclick="toggleSilentMode(!ChartFeatures.silentMode)">
+          ${ChartFeatures.silentMode ? 'Exit sacred mode' : 'Sacred mode'}
+        </button>
       </div>
 
     </div>
   `;
 }
 
-// Toggle FAB menu
-function toggleFabMenu() {
-  const menu = document.getElementById('fab-menu');
-  const fab = document.querySelector('.fab-main');
-  if (menu && fab) {
-    menu.classList.toggle('open');
-    fab.classList.toggle('open');
+// Apply chart filter (Kendra, Trikona, Dusthana)
+function applyChartFilter(category) {
+  if (ChartFeatures.highlightCategory === category) {
+    ChartFeatures.highlightCategory = null;
+  } else {
+    ChartFeatures.highlightCategory = category;
+  }
+
+  // Re-render chart section
+  const contentArea = document.getElementById('content-area');
+  if (contentArea && typeof window.renderEnhancedChart === 'function') {
+    contentArea.innerHTML = window.renderEnhancedChart();
   }
 }
 
-// Toggle drawer
-function toggleDrawer() {
-  const drawer = document.getElementById('chart-drawer');
-  if (drawer) {
-    drawer.classList.toggle('open');
-  }
-}
-
-window.toggleFabMenu = toggleFabMenu;
-window.toggleDrawer = toggleDrawer;
+window.applyChartFilter = applyChartFilter;
 
 function renderChartInfoCards() {
   if (!chartData) return '';

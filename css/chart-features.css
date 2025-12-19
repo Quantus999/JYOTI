@@ -1,396 +1,248 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   JYOTI Chart Features — Dramatic Improvements 1-5
-   Observatory • Progressive Depth • FAB • Essence • Drawer
+   JYOTI Chart Features — Pure Minimalism
+   Billionaire × Apple × AI 2050 × Best UX/UI
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   OBSERVATORY LAYOUT (Suggestion 1 & 5)
-   The chart IS the interface - minimal, sacred, focused
+   CHART SECTION — Radical Simplicity
    ═══════════════════════════════════════════════════════════════════════════ */
-.observatory {
-  position: relative;
-  min-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-sanctuary) 100%);
-}
 
-.observatory-empty {
+/* Empty state */
+.chart-empty {
   text-align: center;
-  padding: 80px 40px;
-  color: var(--text-muted);
+  padding: 120px 40px;
 }
 
-.observatory-empty-icon {
-  font-size: 4rem;
-  opacity: 0.2;
-  margin-bottom: 24px;
+.chart-empty-glyph {
+  font-size: 3rem;
+  color: var(--gold);
+  opacity: 0.3;
+  margin-bottom: 32px;
 }
 
-.observatory-empty h3 {
+.chart-empty h3 {
   font-family: var(--font-display);
   font-size: 1.5rem;
+  font-weight: 400;
   color: var(--ink);
   margin-bottom: 12px;
 }
 
-.observatory-empty p {
-  max-width: 300px;
-  margin: 0 auto 24px;
-  line-height: 1.6;
+.chart-empty p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 32px;
 }
 
-.observatory-btn {
-  padding: 14px 32px;
+.chart-empty-btn {
+  padding: 14px 40px;
   background: var(--prussian);
   color: white;
   border: none;
-  border-radius: 100px;
+  border-radius: 8px;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: opacity 0.2s;
 }
 
-.observatory-btn:hover {
-  transform: scale(1.02);
+.chart-empty-btn:hover {
+  opacity: 0.9;
 }
 
-/* Chart Container - Hero element */
-.observatory-chart {
-  width: 100%;
-  max-width: 440px;
+/* Main container */
+.chart-pure {
+  max-width: 600px;
   margin: 0 auto;
+  padding: 40px 24px 60px;
 }
 
-.observatory-chart-inner {
-  background: var(--bg-card);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   ESSENCE BAR (Suggestion 2 - Layer 2)
-   3 key facts - whisper thin, always visible
-   ═══════════════════════════════════════════════════════════════════════════ */
-.essence-bar {
+/* Chart stage — the sacred space */
+.chart-stage {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 24px;
-  margin-top: 24px;
-  padding: 16px 24px;
-  background: var(--bg-card);
-  border-radius: 100px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  margin-bottom: 40px;
 }
 
-.essence-item {
+.chart-frame {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 40px rgba(0,0,0,0.04);
+}
+
+/* Essence pills — three truths */
+.chart-essence {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.essence-pill {
   display: flex;
   align-items: center;
   gap: 8px;
+  padding: 10px 20px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.85rem;
+  color: var(--ink);
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 8px;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
-.essence-item:hover {
+.essence-pill:hover {
+  border-color: var(--gold);
   background: var(--gold-soft);
 }
 
-.essence-glyph {
-  font-size: 1.2rem;
+.pill-glyph {
+  font-size: 1.1rem;
   color: var(--gold);
 }
 
-.essence-label {
+.pill-text {
+  font-weight: 500;
+}
+
+/* Filter chips */
+.chart-filters {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.filter-chip {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 100px;
   font-size: 0.75rem;
   color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.essence-divider {
-  width: 1px;
-  height: 20px;
-  background: var(--border);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   FLOATING ACTION BUTTON (Suggestion 3)
-   Single button replaces entire toolbar
-   ═══════════════════════════════════════════════════════════════════════════ */
-.fab-container {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 100;
-}
-
-.fab-main {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  border: none;
-  background: var(--prussian);
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0,49,83,0.3);
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.fab-main:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 24px rgba(0,49,83,0.4);
-}
-
-.fab-main.open {
-  transform: rotate(45deg);
-  background: var(--gold);
-}
-
-.fab-icon {
-  transition: transform 0.3s;
-}
-
-.fab-menu {
-  position: absolute;
-  bottom: 70px;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(20px);
-  transition: all 0.3s ease;
-}
-
-.fab-menu.open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.fab-item {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: none;
-  background: white;
-  color: var(--prussian);
-  font-size: 1.1rem;
-  cursor: pointer;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
-  transition: transform 0.2s, background 0.2s;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.fab-item:hover {
-  transform: scale(1.1);
-  background: var(--gold-soft);
-}
-
-.fab-item::before {
-  content: attr(data-label);
-  position: absolute;
-  right: 54px;
-  background: var(--prussian);
-  color: white;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 0.7rem;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.fab-item:hover::before {
-  opacity: 1;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   DRAWER (Suggestion 5 - Layer 3)
-   All extras hidden, revealed on demand
-   ═══════════════════════════════════════════════════════════════════════════ */
-.chart-drawer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: var(--bg-card);
-  border-radius: 24px 24px 0 0;
-  box-shadow: 0 -4px 32px rgba(0,0,0,0.1);
-  transform: translateY(calc(100% - 24px));
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 90;
-  max-height: 60vh;
-  overflow: hidden;
-}
-
-.chart-drawer.open {
-  transform: translateY(0);
-}
-
-.drawer-handle {
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.drawer-handle span {
-  width: 40px;
-  height: 4px;
-  background: var(--border);
-  border-radius: 2px;
-}
-
-.drawer-content {
-  padding: 8px 24px 32px;
-  overflow-y: auto;
-  max-height: calc(60vh - 24px);
-}
-
-.drawer-section {
-  margin-bottom: 20px;
-}
-
-.drawer-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.drawer-chip {
-  padding: 8px 16px;
-  background: var(--stone-soft);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  font-size: 0.8rem;
+.filter-chip:hover {
+  border-color: var(--stone);
   color: var(--ink);
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
-.drawer-chip:hover,
-.drawer-chip.active {
-  background: var(--gold-soft);
-  border-color: var(--gold);
+.filter-chip.active {
+  background: var(--prussian);
+  border-color: var(--prussian);
+  color: white;
 }
 
-.chip-hint {
-  font-size: 0.65rem;
-  color: var(--text-muted);
+/* Chart with active filter */
+.chart-frame.kendra .chart-cell-interactive[data-house="1"],
+.chart-frame.kendra .chart-cell-interactive[data-house="4"],
+.chart-frame.kendra .chart-cell-interactive[data-house="7"],
+.chart-frame.kendra .chart-cell-interactive[data-house="10"] {
+  background: rgba(0, 49, 83, 0.08) !important;
 }
 
-.drawer-info-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+.chart-frame.trikona .chart-cell-interactive[data-house="1"],
+.chart-frame.trikona .chart-cell-interactive[data-house="5"],
+.chart-frame.trikona .chart-cell-interactive[data-house="9"] {
+  background: rgba(184, 151, 107, 0.15) !important;
 }
 
-.drawer-info-card {
-  padding: 16px;
-  background: var(--bg-sanctuary);
-  border-radius: 12px;
-  text-align: center;
-  cursor: pointer;
-  transition: background 0.2s;
+.chart-frame.dusthana .chart-cell-interactive[data-house="6"],
+.chart-frame.dusthana .chart-cell-interactive[data-house="8"],
+.chart-frame.dusthana .chart-cell-interactive[data-house="12"] {
+  background: rgba(100, 116, 139, 0.1) !important;
 }
 
-.drawer-info-card:hover {
-  background: var(--gold-soft);
-}
-
-.info-card-glyph {
-  font-size: 1.5rem;
-  color: var(--gold);
-  margin-bottom: 4px;
-}
-
-.info-card-title {
-  font-weight: 500;
-  color: var(--ink);
-  font-size: 0.9rem;
-}
-
-.info-card-sub {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  margin-top: 2px;
-}
-
-.drawer-legend {
+/* Actions — minimal links */
+.chart-actions {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 16px;
-  flex-wrap: wrap;
-  font-size: 0.7rem;
+}
+
+.action-link {
+  background: none;
+  border: none;
+  font-size: 0.8rem;
   color: var(--text-muted);
+  cursor: pointer;
+  padding: 8px 0;
+  transition: color 0.2s;
 }
 
-.drawer-legend span {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+.action-link:hover {
+  color: var(--prussian);
 }
 
-.legend-lagna {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  background: var(--champagne-soft);
-  border: 1px solid var(--gold);
-  border-radius: 2px;
+.action-dot {
+  color: var(--border);
 }
 
-.legend-exalted {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border: 2px solid var(--gold);
-  border-radius: 50%;
+/* Sacred mode */
+.chart-pure.chart-sacred {
+  background: #0a0a0f;
+  min-height: 100vh;
+  margin: -24px;
+  padding: 60px 40px;
 }
 
-.legend-debilitated {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border: 2px solid #c0392b;
-  border-radius: 50%;
+.chart-sacred .chart-frame {
+  background: transparent;
+  box-shadow: none;
+  border: 1px solid rgba(184, 151, 107, 0.2);
 }
 
-.legend-retro {
-  color: var(--brass);
-  font-style: normal;
+.chart-sacred .si-chart-interactive {
+  background: transparent !important;
 }
 
-.drawer-hints {
-  text-align: center;
-  font-size: 0.65rem;
-  color: var(--text-muted);
+.chart-sacred .chart-cell-interactive {
+  background: transparent !important;
+  border-color: rgba(184, 151, 107, 0.15) !important;
 }
 
-.drawer-hints kbd {
-  background: var(--stone-soft);
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin: 0 2px;
+.chart-sacred .chart-cell-interactive.lagna {
+  border-color: var(--gold) !important;
+}
+
+.chart-sacred .cell-sign-interactive,
+.chart-sacred .cell-house-num {
+  opacity: 0.3;
+}
+
+.chart-sacred .planet-glyph-interactive {
+  color: var(--gold) !important;
+}
+
+.chart-sacred .chart-essence,
+.chart-sacred .chart-filters {
+  opacity: 0;
+}
+
+.chart-sacred .chart-actions {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.chart-sacred .action-link,
+.chart-sacred .action-dot {
+  color: rgba(255,255,255,0.3);
+}
+
+.chart-sacred .action-link:hover {
+  color: var(--gold);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
