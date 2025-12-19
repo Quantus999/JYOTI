@@ -47,7 +47,7 @@
 .wheel-chart-container {
   position: relative;
   width: 100%;
-  max-width: 450px;
+  max-width: 400px;
   aspect-ratio: 1;
   margin: 0 auto;
 }
@@ -55,50 +55,87 @@
 .wheel-chart-svg {
   width: 100%;
   height: 100%;
+  display: block;
 }
 
-.wheel-sign-segment {
+/* Wheel segments */
+.wheel-segment {
   fill: transparent;
-  stroke: var(--border);
-  stroke-width: 1;
-  transition: fill 0.3s ease;
-}
-
-.wheel-sign-segment:hover {
-  fill: rgba(201, 162, 39, 0.1);
-}
-
-.wheel-sign-segment.lagna {
-  fill: rgba(201, 162, 39, 0.15);
-}
-
-.wheel-house-line {
-  stroke: var(--border-whisper);
-  stroke-width: 0.5;
-}
-
-.wheel-planet {
+  stroke: none;
   cursor: pointer;
-  transition: transform 0.3s ease;
 }
 
-.wheel-planet:hover {
-  transform: scale(1.3);
+.wheel-segment:hover {
+  fill: rgba(201, 162, 39, 0.08);
 }
 
-.wheel-planet-glyph {
-  font-size: 14px;
-  fill: var(--prussian);
+.wheel-lagna {
+  fill: rgba(201, 162, 39, 0.12);
+}
+
+.wheel-divider {
+  stroke: #d4c8b8;
+  stroke-width: 1;
+}
+
+/* Text labels in wheel */
+.wheel-sign-label {
+  font-size: 16px;
+  fill: #8b7355;
   text-anchor: middle;
   dominant-baseline: central;
+  pointer-events: none;
 }
 
-.wheel-planet-glyph.exalted {
-  fill: var(--gold);
+.wheel-house-num {
+  font-size: 10px;
+  fill: #a89880;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
 }
 
-.wheel-planet-glyph.debilitated {
-  fill: #c0392b;
+.wheel-center-label {
+  font-size: 11px;
+  fill: #4a5568;
+  text-anchor: middle;
+  font-weight: 500;
+}
+
+.wheel-center-sign {
+  font-size: 14px;
+  fill: #c9a227;
+  text-anchor: middle;
+  font-weight: 600;
+}
+
+/* Planet circles in wheel */
+.wheel-planet-group {
+  cursor: pointer;
+}
+
+.wheel-planet-bg {
+  fill: white;
+  stroke: #d4c8b8;
+  stroke-width: 1;
+}
+
+.wheel-planet-bg.exalted {
+  stroke: #c9a227;
+  stroke-width: 2;
+}
+
+.wheel-planet-bg.debilitated {
+  stroke: #c0392b;
+  stroke-width: 2;
+}
+
+.wheel-planet-text {
+  font-size: 14px;
+  fill: #2d3748;
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -804,12 +841,14 @@
 }
 
 /* Wheel chart symbols-only mode */
-.chart-symbols-only .wheel-chart-svg text:not(.wheel-planet-glyph) {
+.chart-symbols-only .wheel-sign-label,
+.chart-symbols-only .wheel-house-num,
+.chart-symbols-only .wheel-center-label {
   display: none;
 }
 
-.chart-symbols-only .wheel-planet-glyph {
-  font-size: 18px;
+.chart-symbols-only .wheel-planet-text {
+  font-size: 16px;
 }
 
 .symbols-toggle {

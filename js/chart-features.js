@@ -188,10 +188,12 @@ function renderWheelChart() {
   const outerRadius = 180;
   const innerRadius = 100;
   const planetRadius = 140;
+  const houseNumRadius = 165;
 
   // Create SVG paths for zodiac segments
   let segments = '';
   let signLabels = '';
+  let houseNumbers = '';
   let houseLines = '';
   let planetGlyphs = '';
 
@@ -200,6 +202,7 @@ function renderWheelChart() {
     const houseNum = i + 1;
     const startAngle = (i * 30 - 90) * (Math.PI / 180);
     const endAngle = ((i + 1) * 30 - 90) * (Math.PI / 180);
+    const midAngle = ((i + 0.5) * 30 - 90) * (Math.PI / 180);
 
     // Segment path
     const x1 = centerX + outerRadius * Math.cos(startAngle);
@@ -213,42 +216,39 @@ function renderWheelChart() {
 
     const isLagna = i === 0;
     segments += `
-      <path class="wheel-sign-segment${isLagna ? ' lagna' : ''}"
+      <path class="wheel-segment${isLagna ? ' wheel-lagna' : ''}"
             d="M${x1},${y1} A${outerRadius},${outerRadius} 0 0,1 ${x2},${y2} L${x3},${y3} A${innerRadius},${innerRadius} 0 0,0 ${x4},${y4} Z"
             data-house="${houseNum}"
-            data-tooltip="house"
-            onclick="showChartTooltip(event, 'house', ${houseNum}); ChartFeatures.exploreHouse(${houseNum});"
-            ondblclick="showHouseModal(${houseNum})" />
+            onclick="showHouseModal(${houseNum}); ChartFeatures.exploreHouse(${houseNum});" />
     `;
 
-    // Sign label
-    const labelAngle = ((i + 0.5) * 30 - 90) * (Math.PI / 180);
+    // Sign glyph in segment
     const labelRadius = (outerRadius + innerRadius) / 2;
-    const labelX = centerX + labelRadius * Math.cos(labelAngle);
-    const labelY = centerY + labelRadius * Math.sin(labelAngle);
-    signLabels += `<text x="${labelX}" y="${labelY}" text-anchor="middle" dominant-baseline="central"
-                        font-size="10" fill="var(--text-muted)">${SIGN_GLYPHS[signIndex]}</text>`;
+    const labelX = centerX + labelRadius * Math.cos(midAngle);
+    const labelY = centerY + labelRadius * Math.sin(midAngle);
+    signLabels += `<text class="wheel-sign-label" x="${labelX}" y="${labelY}">${SIGN_GLYPHS[signIndex]}</text>`;
 
-    // House line
-    houseLines += `<line class="wheel-house-line" x1="${centerX}" y1="${centerY}" x2="${x1}" y2="${y1}" />`;
+    // House number near outer edge
+    const numX = centerX + houseNumRadius * Math.cos(midAngle);
+    const numY = centerY + houseNumRadius * Math.sin(midAngle);
+    houseNumbers += `<text class="wheel-house-num" x="${numX}" y="${numY}">${houseNum}</text>`;
+
+    // House divider line
+    houseLines += `<line class="wheel-divider" x1="${centerX + innerRadius * Math.cos(startAngle)}" y1="${centerY + innerRadius * Math.sin(startAngle)}" x2="${x1}" y2="${y1}" />`;
 
     // Planets in this house
     const planetsHere = c.planets.filter(p => p.house === houseNum);
     planetsHere.forEach((planet, pIdx) => {
-      const pAngle = ((i + 0.3 + pIdx * 0.3) * 30 - 90) * (Math.PI / 180);
+      const pAngle = ((i + 0.25 + pIdx * 0.25) * 30 - 90) * (Math.PI / 180);
       const px = centerX + planetRadius * Math.cos(pAngle);
       const py = centerY + planetRadius * Math.sin(pAngle);
 
-      let classes = 'wheel-planet-glyph';
-      if (planet.exalted) classes += ' exalted';
-      if (planet.debilitated) classes += ' debilitated';
+      let colorClass = planet.exalted ? 'exalted' : planet.debilitated ? 'debilitated' : '';
 
       planetGlyphs += `
-        <g class="wheel-planet" data-tooltip="planet"
-           onclick="showChartTooltip(event, 'planet', '${planet.name}'); ChartFeatures.explorePlanet('${planet.name}');"
-           ondblclick="showPlanetModal('${planet.name}')">
-          <circle cx="${px}" cy="${py}" r="12" fill="white" stroke="var(--border)" />
-          <text class="${classes}" x="${px}" y="${py}">${planet.glyph}</text>
+        <g class="wheel-planet-group" onclick="showPlanetModal('${planet.name}'); ChartFeatures.explorePlanet('${planet.name}');">
+          <circle cx="${px}" cy="${py}" r="14" class="wheel-planet-bg ${colorClass}" />
+          <text class="wheel-planet-text" x="${px}" y="${py}">${planet.glyph}</text>
         </g>
       `;
     });
@@ -256,22 +256,29 @@ function renderWheelChart() {
 
   return `
     <div class="wheel-chart-container">
-      <svg class="wheel-chart-svg" viewBox="0 0 400 400">
-        <!-- Outer circle -->
-        <circle cx="${centerX}" cy="${centerY}" r="${outerRadius}" fill="none" stroke="var(--border)" stroke-width="2" />
-        <!-- Inner circle -->
-        <circle cx="${centerX}" cy="${centerY}" r="${innerRadius}" fill="var(--stone-soft)" stroke="var(--border)" stroke-width="1" />
-        <!-- Segments -->
+      <svg class="wheel-chart-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="wheel-shadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.1"/>
+          </filter>
+        </defs>
+        <!-- Background circles -->
+        <circle cx="${centerX}" cy="${centerY}" r="${outerRadius}" fill="none" stroke="#e0d5c7" stroke-width="2" />
+        <circle cx="${centerX}" cy="${centerY}" r="${innerRadius}" fill="#faf8f5" stroke="#e0d5c7" stroke-width="1" />
+        <!-- Segments (clickable) -->
         ${segments}
-        <!-- House lines -->
+        <!-- Divider lines -->
         ${houseLines}
-        <!-- Sign labels -->
+        <!-- House numbers -->
+        ${houseNumbers}
+        <!-- Sign glyphs -->
         ${signLabels}
         <!-- Planets -->
         ${planetGlyphs}
-        <!-- Center info -->
-        <text x="${centerX}" y="${centerY - 10}" text-anchor="middle" font-size="12" fill="var(--prussian)" font-weight="500">Lagna</text>
-        <text x="${centerX}" y="${centerY + 10}" text-anchor="middle" font-size="14" fill="var(--gold)">${SIGNS[c.lagna]}</text>
+        <!-- Center -->
+        <circle cx="${centerX}" cy="${centerY}" r="45" fill="white" stroke="#e0d5c7" filter="url(#wheel-shadow)" />
+        <text x="${centerX}" y="${centerY - 8}" class="wheel-center-label">Lagna</text>
+        <text x="${centerX}" y="${centerY + 12}" class="wheel-center-sign">${SIGNS[c.lagna]}</text>
       </svg>
     </div>
   `;
@@ -1336,7 +1343,7 @@ function renderEnhancedOverviewChart() {
   const dashaPlanet = c.dasha?.maha?.planet || 'Saturn';
 
   return `
-    <div class="si-chart-interactive overview-chart-breathing" data-dasha="${dashaPlanet}">
+    <div class="si-chart-interactive overview-chart-simple" data-dasha="${dashaPlanet}">
       ${layout.map((signOffset, idx) => {
         if (signOffset === null) {
           return '<div class="chart-cell-interactive empty"></div>';
@@ -1347,34 +1354,23 @@ function renderEnhancedOverviewChart() {
         const isLagna = signOffset === 0;
 
         return `
-          <div class="chart-cell-interactive overview-chart-cell${isLagna ? ' lagna' : ''}"
-               onclick="showSection('chart'); setTimeout(() => enterFocusMode(${houseNum}), 100);"
-               onmouseenter="showChartTooltip(event, 'house', ${houseNum})"
-               onmouseleave="hideChartTooltip()"
+          <div class="chart-cell-interactive overview-cell${isLagna ? ' lagna' : ''}"
+               onclick="showSection('chart'); setTimeout(() => showHouseModal(${houseNum}), 150);"
                data-house="${houseNum}">
             <span class="cell-house-num">${houseNum}</span>
             <span class="cell-sign-interactive">${SIGNS[sign]}</span>
             <div class="cell-planets-interactive">
               ${planetsHere.map(p => {
                 let dignityClass = p.exalted ? ' exalted' : p.debilitated ? ' debilitated' : '';
-                let retroClass = p.retro ? ' planet-retrograde' : '';
-                return `
-                  <span class="planet-glyph-interactive${dignityClass}${p.isAK ? ' ak' : ''}${retroClass}"
-                        onclick="event.stopPropagation(); showSection('chart'); setTimeout(() => showPlanetModal('${p.name}'), 100);"
-                        onmouseenter="showChartTooltip(event, 'planet', '${p.name}')"
-                        onmouseleave="hideChartTooltip()"
-                        title="${p.name}">
-                    ${p.glyph}${p.retro ? '<span class="retrograde-indicator">℞</span>' : ''}
-                  </span>
-                `;
+                return `<span class="planet-glyph-interactive${dignityClass}${p.isAK ? ' ak' : ''}" title="${p.name}">${p.glyph}</span>`;
               }).join('')}
             </div>
           </div>
         `;
       }).join('')}
     </div>
-    <p style="text-align: center; font-size: 0.65rem; color: var(--text-muted); margin-top: 12px;">
-      Click any house to explore in Chart section →
+    <p style="text-align: center; font-size: 0.7rem; color: var(--text-muted); margin-top: 12px;">
+      Tap any house to see full details →
     </p>
   `;
 }

@@ -4223,16 +4223,13 @@ body {
   justify-content: center;
   padding: 8px;
   cursor: pointer;
-  transition: all 0.3s var(--ease-out);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
   position: relative;
 }
 
 .chart-cell-interactive:hover {
   border-color: var(--gold);
   background: var(--gold-soft);
-  transform: scale(1.03);
-  z-index: 10;
-  box-shadow: 0 8px 30px rgba(201, 162, 39, 0.25);
 }
 
 .chart-cell-interactive.lagna {
