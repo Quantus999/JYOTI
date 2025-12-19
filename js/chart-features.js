@@ -1134,135 +1134,166 @@ function renderChartToolbar() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ENHANCED RENDER FUNCTIONS
+// ENHANCED RENDER FUNCTIONS — DRAMATIC IMPROVEMENTS 1-5
+// Observatory Metaphor • Progressive Depth • Floating Action • Essence Only
 // ═══════════════════════════════════════════════════════════════════════════
 
 function renderEnhancedChart() {
   if (!chartData || !chartData.planets) {
     return `
-      <div class="card" style="text-align: center; padding: 60px 40px;">
-        <div style="font-size: 4rem; margin-bottom: 24px; opacity: 0.3;">◇</div>
-        <h3 style="font-family: var(--font-display); font-size: 1.5rem; color: var(--ink); margin-bottom: 16px;">No Chart Calculated</h3>
-        <p style="color: var(--text-muted); max-width: 400px; margin: 0 auto 24px; line-height: 1.7;">
-          Enter your birth details on the home screen to generate your Rāśi chart.
-        </p>
-        <button onclick="document.getElementById('sanctum').classList.add('hidden'); document.getElementById('threshold').classList.remove('hidden');"
-                style="padding: 14px 28px; background: var(--prussian); color: white; border: none; border-radius: 100px; font-size: 0.9rem; cursor: pointer;">
-          ← Return to Entry
+      <div class="observatory-empty">
+        <div class="observatory-empty-icon">✦</div>
+        <h3>Your Chart Awaits</h3>
+        <p>Enter your birth details to reveal your cosmic blueprint</p>
+        <button onclick="document.getElementById('sanctum').classList.add('hidden'); document.getElementById('threshold').classList.remove('hidden');" class="observatory-btn">
+          Begin →
         </button>
       </div>
     `;
   }
 
   const c = chartData;
+  const moon = c.planets.find(p => p.name === 'Moon');
+  const dashaPlanet = c.dasha?.maha?.planet || 'Saturn';
 
   return `
-    <div class="card chart-card" style="position: relative; overflow: hidden; background: linear-gradient(180deg, var(--bg-card) 0%, rgba(26,95,122,0.03) 100%);">
-      <!-- Sanskrit watermark -->
-      <span style="position: absolute; top: 20px; right: 30px; font-family: 'Noto Sans Devanagari', sans-serif; font-size: 6rem; font-weight: 200; color: var(--prussian); opacity: 0.04; pointer-events: none; line-height: 1;">राशि</span>
+    <div class="observatory ${ChartFeatures.silentMode ? 'sacred-mode' : ''}">
 
-      <div class="card-header" style="text-align: center; position: relative; z-index: 1;">
-        <p class="whisper">Your Cosmic Blueprint</p>
-        <h2 class="display-lg" style="color: var(--prussian);">Rāśi Chart</h2>
-        <p class="body-sm">South Indian format • Click any cell to explore • Press T for guided tour</p>
-      </div>
-
-      <!-- Progress Tracker -->
-      ${renderProgressTracker()}
-
-      <!-- Chart Toolbar -->
-      ${renderChartToolbar()}
-
-      <!-- Chart Container -->
-      <div style="max-width: 500px; margin: var(--space-md) auto; position: relative;">
-        <!-- Decorative outer ring -->
-        <div style="position: absolute; inset: -10px; border: 1px solid var(--border-whisper); border-radius: 20px; pointer-events: none;"></div>
-
-        <div id="chart-main-container" style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.08);">
-          ${ChartFeatures.viewMode === 'wheel' ? renderWheelChart() : renderSquareChart()}
+      <!-- LAYER 1: THE CHART (Hero - 70% of attention) -->
+      <div class="observatory-chart">
+        <div id="chart-main-container" class="observatory-chart-inner">
+          ${renderSquareChart()}
         </div>
       </div>
 
-      <!-- Legend -->
-      <div style="display: flex; justify-content: center; gap: 24px; margin-top: var(--space-md); flex-wrap: wrap;">
-        <div style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--text-muted);">
-          <span style="width: 12px; height: 12px; background: var(--champagne-soft); border: 1px solid var(--gold); border-radius: 3px;"></span>
-          Ascendant
+      <!-- LAYER 2: ESSENCE BAR (3 key facts) -->
+      <div class="essence-bar">
+        <div class="essence-item" onclick="showHouseModal(1)">
+          <span class="essence-glyph">${SIGN_GLYPHS[c.lagna]}</span>
+          <span class="essence-label">Rising</span>
         </div>
-        <div style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--text-muted);">
-          <span class="planet-dignity-ring exalted" style="width: 12px; height: 12px;"></span>
-          Exalted
+        <div class="essence-divider"></div>
+        <div class="essence-item" onclick="showPlanetModal('Moon')">
+          <span class="essence-glyph">☽</span>
+          <span class="essence-label">${moon ? SIGNS[moon.sign] : ''}</span>
         </div>
-        <div style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--text-muted);">
-          <span class="planet-dignity-ring debilitated" style="width: 12px; height: 12px;"></span>
-          Challenged
-        </div>
-        <div style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--text-muted);">
-          <span style="color: var(--teal); font-size: 1rem;">◉</span>
-          Soul Teacher
-        </div>
-        <div style="display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--text-muted);">
-          <span style="color: var(--brass);">℞</span>
-          Retrograde
+        <div class="essence-divider"></div>
+        <div class="essence-item" onclick="toggleDrawer()">
+          <span class="essence-glyph">${P_GLYPHS[dashaPlanet] || '✦'}</span>
+          <span class="essence-label">${dashaPlanet} Dasha</span>
         </div>
       </div>
 
-      <!-- Keyboard Shortcuts Hint -->
-      <div style="text-align: center; margin-top: var(--space-md); font-size: 0.65rem; color: var(--text-muted);">
-        Shortcuts: <kbd style="background: var(--stone-soft); padding: 2px 6px; border-radius: 4px;">T</kbd> Teach Me •
-        <kbd style="background: var(--stone-soft); padding: 2px 6px; border-radius: 4px;">W</kbd> Toggle View •
-        <kbd style="background: var(--stone-soft); padding: 2px 6px; border-radius: 4px;">S</kbd> Symbols Only •
-        <kbd style="background: var(--stone-soft); padding: 2px 6px; border-radius: 4px;">M</kbd> Sacred Mode
+      <!-- FLOATING ACTION BUTTON (Replaces toolbar) -->
+      <div class="fab-container">
+        <button class="fab-main" onclick="toggleFabMenu()" aria-label="Open menu">
+          <span class="fab-icon">✦</span>
+        </button>
+        <div class="fab-menu" id="fab-menu">
+          <button class="fab-item" onclick="startTeachMode(); toggleFabMenu();" data-label="Teach Me">
+            <span>📖</span>
+          </button>
+          <button class="fab-item" onclick="toggleDrawer(); toggleFabMenu();" data-label="Explore">
+            <span>◎</span>
+          </button>
+          <button class="fab-item" onclick="toggleSilentMode(!ChartFeatures.silentMode); toggleFabMenu();" data-label="Sacred">
+            <span>🕯</span>
+          </button>
+          <button class="fab-item" onclick="toggleChartView(ChartFeatures.viewMode === 'wheel' ? 'square' : 'wheel'); toggleFabMenu();" data-label="View">
+            <span>◐</span>
+          </button>
+        </div>
       </div>
 
-      <!-- Vedic Terms Glossary -->
-      <details class="vedic-glossary" style="margin-top: var(--space-lg); background: var(--stone-soft); border-radius: 12px; padding: 16px;">
-        <summary style="cursor: pointer; font-weight: 500; color: var(--prussian); font-size: 0.85rem;">
-          ✦ Vedic Astrology Terms — Click to learn
-        </summary>
-        <div style="margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; font-size: 0.75rem;">
-          <div style="padding: 10px; background: white; border-radius: 8px;">
-            <strong style="color: var(--gold);">Rāśi (राशि)</strong>
-            <p style="margin: 4px 0 0; color: var(--text-muted);">Zodiac sign. There are 12 Rāśis, each 30° of the zodiac. Your Lagna Rāśi is your rising sign.</p>
+      <!-- LAYER 3: DRAWER (All extras - hidden by default) -->
+      <div class="chart-drawer" id="chart-drawer">
+        <div class="drawer-handle" onclick="toggleDrawer()">
+          <span></span>
+        </div>
+
+        <div class="drawer-content">
+          <!-- Quick Actions -->
+          <div class="drawer-section">
+            <div class="drawer-row">
+              <button class="drawer-chip ${ChartFeatures.highlightCategory === 'kendra' ? 'active' : ''}" onclick="highlightHouseCategory('kendra')">
+                Kendra <span class="chip-hint">1,4,7,10</span>
+              </button>
+              <button class="drawer-chip ${ChartFeatures.highlightCategory === 'trikona' ? 'active' : ''}" onclick="highlightHouseCategory('trikona')">
+                Trikona <span class="chip-hint">1,5,9</span>
+              </button>
+              <button class="drawer-chip ${ChartFeatures.highlightCategory === 'dusthana' ? 'active' : ''}" onclick="highlightHouseCategory('dusthana')">
+                Dusthana <span class="chip-hint">6,8,12</span>
+              </button>
+            </div>
           </div>
-          <div style="padding: 10px; background: white; border-radius: 8px;">
-            <strong style="color: var(--gold);">Nakshatra (नक्षत्र)</strong>
-            <p style="margin: 4px 0 0; color: var(--text-muted);">Lunar mansion. 27 Nakshatras divide the zodiac into 13°20' segments. More precise than signs for timing.</p>
+
+          <!-- Chart Info -->
+          <div class="drawer-section">
+            <div class="drawer-info-grid">
+              <div class="drawer-info-card" onclick="showHouseModal(1)">
+                <div class="info-card-glyph">${SIGN_GLYPHS[c.lagna]}</div>
+                <div class="info-card-title">${SIGNS[c.lagna]}</div>
+                <div class="info-card-sub">Lagna • ${NAKSHATRAS[c.lagnaNakshatra]}</div>
+              </div>
+              <div class="drawer-info-card" onclick="showPlanetModal('Moon')">
+                <div class="info-card-glyph">☽</div>
+                <div class="info-card-title">${moon ? SIGNS[moon.sign] : '—'}</div>
+                <div class="info-card-sub">Moon • ${moon ? NAKSHATRAS[moon.nakshatra] : ''}</div>
+              </div>
+              <div class="drawer-info-card">
+                <div class="info-card-glyph">${P_GLYPHS[dashaPlanet] || '✦'}</div>
+                <div class="info-card-title">${dashaPlanet}</div>
+                <div class="info-card-sub">Mahādashā</div>
+              </div>
+              <div class="drawer-info-card" onclick="showPlanetModal('${c.atmakaraka}')">
+                <div class="info-card-glyph">◉</div>
+                <div class="info-card-title">${c.atmakaraka}</div>
+                <div class="info-card-sub">Ātmakāraka</div>
+              </div>
+            </div>
           </div>
-          <div style="padding: 10px; background: white; border-radius: 8px;">
-            <strong style="color: var(--gold);">Kendra (केन्द्र)</strong>
-            <p style="margin: 4px 0 0; color: var(--text-muted);">Angular houses (1,4,7,10). The four pillars — most powerful positions for planets. Self, Home, Partnership, Career.</p>
+
+          <!-- Legend -->
+          <div class="drawer-section">
+            <div class="drawer-legend">
+              <span><i class="legend-lagna"></i> Lagna</span>
+              <span><i class="legend-exalted"></i> Exalted</span>
+              <span><i class="legend-debilitated"></i> Debilitated</span>
+              <span><i class="legend-retro">℞</i> Retrograde</span>
+            </div>
           </div>
-          <div style="padding: 10px; background: white; border-radius: 8px;">
-            <strong style="color: var(--gold);">Trikona (त्रिकोण)</strong>
-            <p style="margin: 4px 0 0; color: var(--text-muted);">Trine houses (1,5,9). The dharma triangle — most auspicious houses bringing luck, creativity, and fortune.</p>
-          </div>
-          <div style="padding: 10px; background: white; border-radius: 8px;">
-            <strong style="color: var(--gold);">Dusthana (दुस्थान)</strong>
-            <p style="margin: 4px 0 0; color: var(--text-muted);">Difficult houses (6,8,12). Areas of challenge — obstacles, transformation, and surrender. Growth through difficulty.</p>
-          </div>
-          <div style="padding: 10px; background: white; border-radius: 8px;">
-            <strong style="color: var(--gold);">Dasha (दशा)</strong>
-            <p style="margin: 4px 0 0; color: var(--text-muted);">Planetary period. The Vimshottari system divides life into planet-ruled chapters lasting years to decades.</p>
-          </div>
-          <div style="padding: 10px; background: white; border-radius: 8px;">
-            <strong style="color: var(--gold);">Graha (ग्रह)</strong>
-            <p style="margin: 4px 0 0; color: var(--text-muted);">Planet or "seizer". Nine Grahas influence the chart: Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu, Ketu.</p>
-          </div>
-          <div style="padding: 10px; background: white; border-radius: 8px;">
-            <strong style="color: var(--gold);">Bhāva (भाव)</strong>
-            <p style="margin: 4px 0 0; color: var(--text-muted);">House. 12 Bhāvas represent life areas. First house is the rising sign (Lagna), counted counter-clockwise.</p>
+
+          <!-- Keyboard hints -->
+          <div class="drawer-section drawer-hints">
+            <kbd>T</kbd> Teach • <kbd>W</kbd> View • <kbd>M</kbd> Sacred • <kbd>ESC</kbd> Close
           </div>
         </div>
-      </details>
-
-      <!-- Key Chart Info Cards -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: var(--space-lg);">
-        ${renderChartInfoCards()}
       </div>
+
     </div>
   `;
 }
+
+// Toggle FAB menu
+function toggleFabMenu() {
+  const menu = document.getElementById('fab-menu');
+  const fab = document.querySelector('.fab-main');
+  if (menu && fab) {
+    menu.classList.toggle('open');
+    fab.classList.toggle('open');
+  }
+}
+
+// Toggle drawer
+function toggleDrawer() {
+  const drawer = document.getElementById('chart-drawer');
+  if (drawer) {
+    drawer.classList.toggle('open');
+  }
+}
+
+window.toggleFabMenu = toggleFabMenu;
+window.toggleDrawer = toggleDrawer;
 
 function renderChartInfoCards() {
   if (!chartData) return '';
@@ -1332,46 +1363,68 @@ function refreshChart() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ENHANCED OVERVIEW CHART (Subset of Features)
+// ENHANCED OVERVIEW — ESSENCE ONLY (Suggestion 4)
+// Just the chart + 3 key facts + one action
 // ═══════════════════════════════════════════════════════════════════════════
 
 function renderEnhancedOverviewChart() {
-  if (!chartData) return '<div>Generate your chart first</div>';
+  if (!chartData) return '<div class="overview-placeholder">Generate your chart to see overview</div>';
 
   const c = chartData;
-  const layout = [11,0,1,2,10,null,null,3,9,null,null,4,8,7,6,5];
+  const moon = c.planets.find(p => p.name === 'Moon');
   const dashaPlanet = c.dasha?.maha?.planet || 'Saturn';
+  const layout = [11,0,1,2,10,null,null,3,9,null,null,4,8,7,6,5];
 
   return `
-    <div class="si-chart-interactive overview-chart-simple" data-dasha="${dashaPlanet}">
-      ${layout.map((signOffset, idx) => {
-        if (signOffset === null) {
-          return '<div class="chart-cell-interactive empty"></div>';
-        }
-        const sign = (c.lagna + signOffset) % 12;
-        const houseNum = signOffset + 1;
-        const planetsHere = c.planets.filter(p => p.house === houseNum);
-        const isLagna = signOffset === 0;
+    <div class="overview-essence">
+      <!-- The Chart (clean, no interactions) -->
+      <div class="overview-chart-display">
+        <div class="si-chart-interactive overview-minimal">
+          ${layout.map((signOffset) => {
+            if (signOffset === null) {
+              return '<div class="chart-cell-interactive empty"></div>';
+            }
+            const sign = (c.lagna + signOffset) % 12;
+            const houseNum = signOffset + 1;
+            const planetsHere = c.planets.filter(p => p.house === houseNum);
+            const isLagna = signOffset === 0;
 
-        return `
-          <div class="chart-cell-interactive overview-cell${isLagna ? ' lagna' : ''}"
-               onclick="showSection('chart'); setTimeout(() => showHouseModal(${houseNum}), 150);"
-               data-house="${houseNum}">
-            <span class="cell-house-num">${houseNum}</span>
-            <span class="cell-sign-interactive">${SIGNS[sign]}</span>
-            <div class="cell-planets-interactive">
-              ${planetsHere.map(p => {
-                let dignityClass = p.exalted ? ' exalted' : p.debilitated ? ' debilitated' : '';
-                return `<span class="planet-glyph-interactive${dignityClass}${p.isAK ? ' ak' : ''}" title="${p.name}">${p.glyph}</span>`;
-              }).join('')}
-            </div>
-          </div>
-        `;
-      }).join('')}
+            return `
+              <div class="chart-cell-interactive${isLagna ? ' lagna' : ''}" data-house="${houseNum}">
+                <span class="cell-sign-interactive">${SIGN_GLYPHS[sign]}</span>
+                <div class="cell-planets-interactive">
+                  ${planetsHere.map(p => `<span class="planet-glyph-interactive" title="${p.name}">${p.glyph}</span>`).join('')}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
+      <!-- 3 Key Facts -->
+      <div class="overview-facts">
+        <div class="overview-fact">
+          <span class="fact-glyph">${SIGN_GLYPHS[c.lagna]}</span>
+          <span class="fact-value">${SIGNS[c.lagna]}</span>
+          <span class="fact-label">Rising</span>
+        </div>
+        <div class="overview-fact">
+          <span class="fact-glyph">☽</span>
+          <span class="fact-value">${moon ? SIGNS[moon.sign] : '—'}</span>
+          <span class="fact-label">Moon</span>
+        </div>
+        <div class="overview-fact">
+          <span class="fact-glyph">${P_GLYPHS[dashaPlanet] || '✦'}</span>
+          <span class="fact-value">${dashaPlanet}</span>
+          <span class="fact-label">Dasha</span>
+        </div>
+      </div>
+
+      <!-- Single Action -->
+      <button class="overview-cta" onclick="showSection('chart')">
+        Enter Deep Chart →
+      </button>
     </div>
-    <p style="text-align: center; font-size: 0.7rem; color: var(--text-muted); margin-top: 12px;">
-      Tap any house to see full details →
-    </p>
   `;
 }
 

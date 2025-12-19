@@ -1,9 +1,504 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   JYOTI Chart Features — 20 Revolutionary Improvements
-   Transforming the chart from static display to living teaching tool
+   JYOTI Chart Features — Dramatic Improvements 1-5
+   Observatory • Progressive Depth • FAB • Essence • Drawer
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   OBSERVATORY LAYOUT (Suggestion 1 & 5)
+   The chart IS the interface - minimal, sacred, focused
+   ═══════════════════════════════════════════════════════════════════════════ */
+.observatory {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg-sanctuary) 100%);
+}
+
+.observatory-empty {
+  text-align: center;
+  padding: 80px 40px;
+  color: var(--text-muted);
+}
+
+.observatory-empty-icon {
+  font-size: 4rem;
+  opacity: 0.2;
+  margin-bottom: 24px;
+}
+
+.observatory-empty h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.observatory-empty p {
+  max-width: 300px;
+  margin: 0 auto 24px;
+  line-height: 1.6;
+}
+
+.observatory-btn {
+  padding: 14px 32px;
+  background: var(--prussian);
+  color: white;
+  border: none;
+  border-radius: 100px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.observatory-btn:hover {
+  transform: scale(1.02);
+}
+
+/* Chart Container - Hero element */
+.observatory-chart {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.observatory-chart-inner {
+  background: var(--bg-card);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ESSENCE BAR (Suggestion 2 - Layer 2)
+   3 key facts - whisper thin, always visible
+   ═══════════════════════════════════════════════════════════════════════════ */
+.essence-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 24px;
+  padding: 16px 24px;
+  background: var(--bg-card);
+  border-radius: 100px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+.essence-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.essence-item:hover {
+  background: var(--gold-soft);
+}
+
+.essence-glyph {
+  font-size: 1.2rem;
+  color: var(--gold);
+}
+
+.essence-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.essence-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FLOATING ACTION BUTTON (Suggestion 3)
+   Single button replaces entire toolbar
+   ═══════════════════════════════════════════════════════════════════════════ */
+.fab-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+}
+
+.fab-main {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: var(--prussian);
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0,49,83,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fab-main:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(0,49,83,0.4);
+}
+
+.fab-main.open {
+  transform: rotate(45deg);
+  background: var(--gold);
+}
+
+.fab-icon {
+  transition: transform 0.3s;
+}
+
+.fab-menu {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.fab-menu.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.fab-item {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: white;
+  color: var(--prussian);
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  transition: transform 0.2s, background 0.2s;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fab-item:hover {
+  transform: scale(1.1);
+  background: var(--gold-soft);
+}
+
+.fab-item::before {
+  content: attr(data-label);
+  position: absolute;
+  right: 54px;
+  background: var(--prussian);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.fab-item:hover::before {
+  opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DRAWER (Suggestion 5 - Layer 3)
+   All extras hidden, revealed on demand
+   ═══════════════════════════════════════════════════════════════════════════ */
+.chart-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-card);
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -4px 32px rgba(0,0,0,0.1);
+  transform: translateY(calc(100% - 24px));
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 90;
+  max-height: 60vh;
+  overflow: hidden;
+}
+
+.chart-drawer.open {
+  transform: translateY(0);
+}
+
+.drawer-handle {
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.drawer-handle span {
+  width: 40px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+}
+
+.drawer-content {
+  padding: 8px 24px 32px;
+  overflow-y: auto;
+  max-height: calc(60vh - 24px);
+}
+
+.drawer-section {
+  margin-bottom: 20px;
+}
+
+.drawer-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.drawer-chip {
+  padding: 8px 16px;
+  background: var(--stone-soft);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.8rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.drawer-chip:hover,
+.drawer-chip.active {
+  background: var(--gold-soft);
+  border-color: var(--gold);
+}
+
+.chip-hint {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.drawer-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.drawer-info-card {
+  padding: 16px;
+  background: var(--bg-sanctuary);
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.drawer-info-card:hover {
+  background: var(--gold-soft);
+}
+
+.info-card-glyph {
+  font-size: 1.5rem;
+  color: var(--gold);
+  margin-bottom: 4px;
+}
+
+.info-card-title {
+  font-weight: 500;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.info-card-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.drawer-legend {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.drawer-legend span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legend-lagna {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--champagne-soft);
+  border: 1px solid var(--gold);
+  border-radius: 2px;
+}
+
+.legend-exalted {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+}
+
+.legend-debilitated {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #c0392b;
+  border-radius: 50%;
+}
+
+.legend-retro {
+  color: var(--brass);
+  font-style: normal;
+}
+
+.drawer-hints {
+  text-align: center;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.drawer-hints kbd {
+  background: var(--stone-soft);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin: 0 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   OVERVIEW ESSENCE (Suggestion 4)
+   Just chart + 3 facts + one button
+   ═══════════════════════════════════════════════════════════════════════════ */
+.overview-essence {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.overview-placeholder {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+}
+
+.overview-chart-display {
+  width: 100%;
+  max-width: 320px;
+}
+
+.overview-minimal {
+  pointer-events: none;
+}
+
+.overview-minimal .cell-house-num {
+  display: none;
+}
+
+.overview-facts {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+
+.overview-fact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.fact-glyph {
+  font-size: 1.5rem;
+  color: var(--gold);
+}
+
+.fact-value {
+  font-weight: 500;
+  color: var(--ink);
+  font-size: 0.9rem;
+}
+
+.fact-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.overview-cta {
+  padding: 14px 32px;
+  background: var(--prussian);
+  color: white;
+  border: none;
+  border-radius: 100px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.overview-cta:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 16px rgba(0,49,83,0.2);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SACRED MODE (Enhanced)
+   ═══════════════════════════════════════════════════════════════════════════ */
+.observatory.sacred-mode {
+  background: linear-gradient(180deg, #1a1a1f 0%, #0d0d12 100%);
+}
+
+.observatory.sacred-mode .observatory-chart-inner {
+  background: #1a1a1f;
+  box-shadow: none;
+}
+
+.observatory.sacred-mode .essence-bar {
+  background: rgba(255,255,255,0.03);
+  box-shadow: none;
+}
+
+.observatory.sacred-mode .essence-label,
+.observatory.sacred-mode .essence-glyph {
+  color: rgba(255,255,255,0.5);
+}
+
+.observatory.sacred-mode .fab-main {
+  background: rgba(255,255,255,0.1);
+  box-shadow: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ORIGINAL FEATURES (kept for compatibility)
    #1 DUAL-VIEW TOGGLE: Square ↔ Wheel
    ═══════════════════════════════════════════════════════════════════════════ */
 .chart-view-toggle {
