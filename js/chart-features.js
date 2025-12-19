@@ -216,9 +216,9 @@ function renderWheelChart() {
       <path class="wheel-sign-segment${isLagna ? ' lagna' : ''}"
             d="M${x1},${y1} A${outerRadius},${outerRadius} 0 0,1 ${x2},${y2} L${x3},${y3} A${innerRadius},${innerRadius} 0 0,0 ${x4},${y4} Z"
             data-house="${houseNum}"
-            onclick="showHouseModal(${houseNum})"
-            onmouseenter="showChartTooltip(event, 'house', ${houseNum})"
-            onmouseleave="hideChartTooltip()" />
+            data-tooltip="house"
+            onclick="showChartTooltip(event, 'house', ${houseNum}); ChartFeatures.exploreHouse(${houseNum});"
+            ondblclick="showHouseModal(${houseNum})" />
     `;
 
     // Sign label
@@ -244,9 +244,9 @@ function renderWheelChart() {
       if (planet.debilitated) classes += ' debilitated';
 
       planetGlyphs += `
-        <g class="wheel-planet" onclick="showPlanetModal('${planet.name}')"
-           onmouseenter="showChartTooltip(event, 'planet', '${planet.name}')"
-           onmouseleave="hideChartTooltip()">
+        <g class="wheel-planet" data-tooltip="planet"
+           onclick="showChartTooltip(event, 'planet', '${planet.name}'); ChartFeatures.explorePlanet('${planet.name}');"
+           ondblclick="showPlanetModal('${planet.name}')">
           <circle cx="${px}" cy="${py}" r="12" fill="white" stroke="var(--border)" />
           <text class="${classes}" x="${px}" y="${py}">${planet.glyph}</text>
         </g>
@@ -310,9 +310,9 @@ function renderSquareChart() {
       return `
         <span class="planet-dignity-ring ${dignityRing} ${retroClass}">
           <span class="planet-glyph-interactive ${dignityClass}${p.isAK ? ' ak' : ''}"
-                onclick="event.stopPropagation(); showPlanetModal('${p.name}'); ChartFeatures.explorePlanet('${p.name}');"
-                onmouseenter="showChartTooltip(event, 'planet', '${p.name}')"
-                onmouseleave="hideChartTooltip()"
+                data-tooltip="planet"
+                onclick="event.stopPropagation(); showChartTooltip(event, 'planet', '${p.name}'); ChartFeatures.explorePlanet('${p.name}');"
+                ondblclick="event.stopPropagation(); showPlanetModal('${p.name}');"
                 title="${p.name} ${fmtDeg(p.degree)}">
             ${p.glyph}
           </span>
@@ -342,9 +342,9 @@ function renderSquareChart() {
 
     return `
       <div class="chart-cell-interactive${isLagna ? ' lagna' : ''}${isEmpty ? ' empty-house' : ''} ${revealedClass} ${categoryClass}"
-           onclick="showHouseModal(${houseNum}); ChartFeatures.exploreHouse(${houseNum});"
-           onmouseenter="showChartTooltip(event, 'house', ${houseNum})"
-           onmouseleave="hideChartTooltip()"
+           data-tooltip="house"
+           onclick="showChartTooltip(event, 'house', ${houseNum}); ChartFeatures.exploreHouse(${houseNum});"
+           ondblclick="showHouseModal(${houseNum})"
            data-house="${houseNum}"
            data-empty-text="${isEmpty ? 'Awaiting activation' : ''}">
         <span class="cell-house-num">${houseNum}</span>
@@ -411,46 +411,61 @@ ChartFeatures.setupTooltip = function() {
   if (tooltipElement) return;
   tooltipElement = document.createElement('div');
   tooltipElement.className = 'chart-tooltip';
-  tooltipElement.innerHTML = '<div class="tooltip-title"></div><div class="tooltip-sanskrit"></div><div class="tooltip-text"></div>';
+  tooltipElement.innerHTML = `
+    <button class="tooltip-close" onclick="hideChartTooltip()" aria-label="Close">×</button>
+    <div class="tooltip-title"></div>
+    <div class="tooltip-sanskrit"></div>
+    <div class="tooltip-text"></div>
+  `;
   document.body.appendChild(tooltipElement);
+
+  // Close tooltip when clicking outside
+  document.addEventListener('click', (e) => {
+    if (tooltipElement && !tooltipElement.contains(e.target) && !e.target.closest('[data-tooltip]')) {
+      hideChartTooltip();
+    }
+  });
 };
 
 function showChartTooltip(event, type, id) {
   if (!tooltipElement) ChartFeatures.setupTooltip();
 
-  clearTimeout(tooltipTimeout);
+  // Stop event propagation to prevent immediate close
+  event.stopPropagation();
 
-  tooltipTimeout = setTimeout(() => {
-    let data;
-    if (type === 'house') {
-      data = HOUSE_TOOLTIPS[id];
-    } else if (type === 'planet') {
-      data = PLANET_TOOLTIPS[id];
-    }
+  let data;
+  if (type === 'house') {
+    data = HOUSE_TOOLTIPS[id];
+  } else if (type === 'planet') {
+    data = PLANET_TOOLTIPS[id];
+  }
 
-    if (!data) return;
+  if (!data) return;
 
-    // Use brief for overview, detailed for chart section
-    const isOverview = event.target.closest('.bento-card') !== null;
-    const text = isOverview ? data.brief : data.detailed;
+  // Use brief for overview, detailed for chart section
+  const isOverview = event.target.closest('.bento-card') !== null;
+  const text = isOverview ? data.brief : data.detailed;
 
-    tooltipElement.querySelector('.tooltip-title').textContent = data.title;
-    tooltipElement.querySelector('.tooltip-sanskrit').textContent = data.sanskrit;
-    tooltipElement.querySelector('.tooltip-text').textContent = text;
+  tooltipElement.querySelector('.tooltip-title').textContent = data.title;
+  tooltipElement.querySelector('.tooltip-sanskrit').textContent = data.sanskrit;
+  tooltipElement.querySelector('.tooltip-text').textContent = text;
 
-    // Position tooltip
-    const rect = event.target.getBoundingClientRect();
-    tooltipElement.style.left = rect.left + rect.width / 2 + 'px';
-    tooltipElement.style.top = rect.bottom + 10 + 'px';
-    tooltipElement.style.transform = 'translateX(-50%)';
+  // Position tooltip near the clicked element
+  const rect = event.target.getBoundingClientRect();
+  const tooltipWidth = 280;
+  let left = rect.left + rect.width / 2;
+  let top = rect.bottom + 10;
 
-    tooltipElement.classList.add('visible');
+  // Keep tooltip within viewport
+  if (left - tooltipWidth / 2 < 10) left = tooltipWidth / 2 + 10;
+  if (left + tooltipWidth / 2 > window.innerWidth - 10) left = window.innerWidth - tooltipWidth / 2 - 10;
+  if (top + 200 > window.innerHeight) top = rect.top - 10;
 
-    // Auto-hide after 3 seconds
-    setTimeout(() => {
-      tooltipElement.classList.remove('visible');
-    }, 3000);
-  }, 200);
+  tooltipElement.style.left = left + 'px';
+  tooltipElement.style.top = top + 'px';
+  tooltipElement.style.transform = top < rect.top ? 'translate(-50%, -100%)' : 'translateX(-50%)';
+
+  tooltipElement.classList.add('visible');
 }
 
 function hideChartTooltip() {
@@ -861,14 +876,29 @@ function highlightHouseCategory(category) {
 function toggleSymbolsOnly(enable) {
   ChartFeatures.symbolsOnly = enable;
 
-  const chartContainer = document.querySelector('.si-chart-interactive');
-  if (chartContainer) {
-    chartContainer.classList.toggle('chart-symbols-only', enable);
+  // Apply to both square and wheel chart containers
+  const squareChart = document.querySelector('.si-chart-interactive');
+  const wheelChart = document.querySelector('.wheel-chart-container');
+
+  if (squareChart) {
+    squareChart.classList.toggle('chart-symbols-only', enable);
+  }
+  if (wheelChart) {
+    wheelChart.classList.toggle('chart-symbols-only', enable);
+  }
+
+  // Also apply to main chart container for consistent styling
+  const mainContainer = document.getElementById('chart-main-container');
+  if (mainContainer) {
+    mainContainer.classList.toggle('chart-symbols-only', enable);
   }
 
   document.querySelectorAll('.symbols-toggle-switch').forEach(sw => {
     sw.classList.toggle('active', enable);
   });
+
+  // Re-render chart to apply changes
+  refreshChart();
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1063,11 +1093,11 @@ function renderChartToolbar() {
       <!-- House Categories -->
       <div class="chart-toolbar-group">
         <button class="chart-toolbar-btn ${ChartFeatures.highlightCategory === 'kendra' ? 'active' : ''}"
-                data-category="kendra" onclick="highlightHouseCategory('kendra')" title="Angular houses: 1,4,7,10">Kendra</button>
+                data-category="kendra" onclick="highlightHouseCategory('kendra')" title="KENDRA (Pillars): Houses 1,4,7,10 — The four pillars of life: Self, Home, Partnership, Career. Most powerful positions for planets.">Kendra</button>
         <button class="chart-toolbar-btn ${ChartFeatures.highlightCategory === 'trikona' ? 'active' : ''}"
-                data-category="trikona" onclick="highlightHouseCategory('trikona')" title="Trine houses: 1,5,9">Trikona</button>
+                data-category="trikona" onclick="highlightHouseCategory('trikona')" title="TRIKONA (Trines): Houses 1,5,9 — The dharma houses: Purpose, Creativity, Fortune. Most auspicious positions bringing luck and blessings.">Trikona</button>
         <button class="chart-toolbar-btn ${ChartFeatures.highlightCategory === 'dusthana' ? 'active' : ''}"
-                data-category="dusthana" onclick="highlightHouseCategory('dusthana')" title="Challenge houses: 6,8,12">Dusthana</button>
+                data-category="dusthana" onclick="highlightHouseCategory('dusthana')" title="DUSTHANA (Challenges): Houses 6,8,12 — The difficult houses: Obstacles, Transformation, Losses. Areas requiring growth and surrender.">Dusthana</button>
       </div>
 
       <div class="chart-toolbar-divider"></div>
@@ -1178,6 +1208,47 @@ function renderEnhancedChart() {
         <kbd style="background: var(--stone-soft); padding: 2px 6px; border-radius: 4px;">M</kbd> Sacred Mode
       </div>
 
+      <!-- Vedic Terms Glossary -->
+      <details class="vedic-glossary" style="margin-top: var(--space-lg); background: var(--stone-soft); border-radius: 12px; padding: 16px;">
+        <summary style="cursor: pointer; font-weight: 500; color: var(--prussian); font-size: 0.85rem;">
+          ✦ Vedic Astrology Terms — Click to learn
+        </summary>
+        <div style="margin-top: 12px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; font-size: 0.75rem;">
+          <div style="padding: 10px; background: white; border-radius: 8px;">
+            <strong style="color: var(--gold);">Rāśi (राशि)</strong>
+            <p style="margin: 4px 0 0; color: var(--text-muted);">Zodiac sign. There are 12 Rāśis, each 30° of the zodiac. Your Lagna Rāśi is your rising sign.</p>
+          </div>
+          <div style="padding: 10px; background: white; border-radius: 8px;">
+            <strong style="color: var(--gold);">Nakshatra (नक्षत्र)</strong>
+            <p style="margin: 4px 0 0; color: var(--text-muted);">Lunar mansion. 27 Nakshatras divide the zodiac into 13°20' segments. More precise than signs for timing.</p>
+          </div>
+          <div style="padding: 10px; background: white; border-radius: 8px;">
+            <strong style="color: var(--gold);">Kendra (केन्द्र)</strong>
+            <p style="margin: 4px 0 0; color: var(--text-muted);">Angular houses (1,4,7,10). The four pillars — most powerful positions for planets. Self, Home, Partnership, Career.</p>
+          </div>
+          <div style="padding: 10px; background: white; border-radius: 8px;">
+            <strong style="color: var(--gold);">Trikona (त्रिकोण)</strong>
+            <p style="margin: 4px 0 0; color: var(--text-muted);">Trine houses (1,5,9). The dharma triangle — most auspicious houses bringing luck, creativity, and fortune.</p>
+          </div>
+          <div style="padding: 10px; background: white; border-radius: 8px;">
+            <strong style="color: var(--gold);">Dusthana (दुस्थान)</strong>
+            <p style="margin: 4px 0 0; color: var(--text-muted);">Difficult houses (6,8,12). Areas of challenge — obstacles, transformation, and surrender. Growth through difficulty.</p>
+          </div>
+          <div style="padding: 10px; background: white; border-radius: 8px;">
+            <strong style="color: var(--gold);">Dasha (दशा)</strong>
+            <p style="margin: 4px 0 0; color: var(--text-muted);">Planetary period. The Vimshottari system divides life into planet-ruled chapters lasting years to decades.</p>
+          </div>
+          <div style="padding: 10px; background: white; border-radius: 8px;">
+            <strong style="color: var(--gold);">Graha (ग्रह)</strong>
+            <p style="margin: 4px 0 0; color: var(--text-muted);">Planet or "seizer". Nine Grahas influence the chart: Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn, Rahu, Ketu.</p>
+          </div>
+          <div style="padding: 10px; background: white; border-radius: 8px;">
+            <strong style="color: var(--gold);">Bhāva (भाव)</strong>
+            <p style="margin: 4px 0 0; color: var(--text-muted);">House. 12 Bhāvas represent life areas. First house is the rising sign (Lagna), counted counter-clockwise.</p>
+          </div>
+        </div>
+      </details>
+
       <!-- Key Chart Info Cards -->
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-top: var(--space-lg);">
         ${renderChartInfoCards()}
@@ -1197,36 +1268,36 @@ function renderChartInfoCards() {
 
   return `
     <div class="liquid-card" style="padding: 16px; text-align: center; cursor: pointer;"
-         onclick="showPlanetModal('Ascendant')"
-         onmouseenter="showChartTooltip(event, 'house', 1)"
-         onmouseleave="hideChartTooltip()">
+         data-tooltip="house"
+         onclick="showChartTooltip(event, 'house', 1); ChartFeatures.exploreHouse(1);"
+         ondblclick="showPlanetModal('Ascendant')">
       <div style="font-size: 1.5rem; margin-bottom: 4px;">${SIGN_GLYPHS[c.lagna]}</div>
-      <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">Rising</div>
+      <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">Rising (Rāśi)</div>
       <div style="font-size: 0.9rem; font-weight: 500; color: var(--prussian);">${SIGNS[c.lagna]}</div>
       <div style="font-size: 0.7rem; color: var(--text-muted);">${NAKSHATRAS[c.lagnaNakshatra]}</div>
     </div>
     <div class="liquid-card" style="padding: 16px; text-align: center; cursor: pointer;"
-         onclick="showPlanetModal('Moon'); ChartFeatures.explorePlanet('Moon');"
-         onmouseenter="showChartTooltip(event, 'planet', 'Moon')"
-         onmouseleave="hideChartTooltip()">
+         data-tooltip="planet"
+         onclick="showChartTooltip(event, 'planet', 'Moon'); ChartFeatures.explorePlanet('Moon');"
+         ondblclick="showPlanetModal('Moon')">
       <div style="font-size: 1.5rem; margin-bottom: 4px;">☽</div>
       <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">Moon</div>
       <div style="font-size: 0.9rem; font-weight: 500; color: var(--prussian);">${moon ? SIGNS[moon.sign] : '—'}</div>
       <div style="font-size: 0.7rem; color: var(--text-muted);">${moon ? NAKSHATRAS[moon.nakshatra] : ''}</div>
     </div>
     <div class="liquid-card" style="padding: 16px; text-align: center; cursor: pointer;"
-         onclick="showPlanetModal('Sun'); ChartFeatures.explorePlanet('Sun');"
-         onmouseenter="showChartTooltip(event, 'planet', 'Sun')"
-         onmouseleave="hideChartTooltip()">
+         data-tooltip="planet"
+         onclick="showChartTooltip(event, 'planet', 'Sun'); ChartFeatures.explorePlanet('Sun');"
+         ondblclick="showPlanetModal('Sun')">
       <div style="font-size: 1.5rem; margin-bottom: 4px;">☉</div>
       <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">Sun</div>
       <div style="font-size: 0.9rem; font-weight: 500; color: var(--prussian);">${sun ? SIGNS[sun.sign] : '—'}</div>
       <div style="font-size: 0.7rem; color: var(--text-muted);">${sun ? NAKSHATRAS[sun.nakshatra] : ''}</div>
     </div>
     <div class="liquid-card" style="padding: 16px; text-align: center; cursor: pointer;"
-         onclick="showPlanetModal('${c.atmakaraka}'); ChartFeatures.explorePlanet('${c.atmakaraka}');"
-         onmouseenter="showChartTooltip(event, 'planet', '${c.atmakaraka}')"
-         onmouseleave="hideChartTooltip()">
+         data-tooltip="planet"
+         onclick="showChartTooltip(event, 'planet', '${c.atmakaraka}'); ChartFeatures.explorePlanet('${c.atmakaraka}');"
+         ondblclick="showPlanetModal('${c.atmakaraka}')">
       <div style="font-size: 1.5rem; margin-bottom: 4px;">${ak ? ak.glyph : '◉'}</div>
       <div style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted);">Ātmakāraka</div>
       <div style="font-size: 0.9rem; font-weight: 500; color: var(--prussian);">${c.atmakaraka}</div>
